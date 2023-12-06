@@ -2,6 +2,10 @@
 #include<sys/select.h>
 #include<stdio.h>
 #define MAX 1024 
+struct SelectData {
+	fd_set readSet;
+	fd_set writeSet;
+};
 
 static void* selectInit();
 static void selectFdSet(struct Channel* channel, struct SelectData* data);
@@ -12,10 +16,6 @@ static int selectModify(struct Channel* channel, struct EventLoop* evLoop);
 static int selectDispatcher(struct EventLoop* evLoop, int timeout);
 static int selectClear(struct EventLoop* evLoop);
 
-struct SelectData {
-	fd_set readSet;
-	fd_set writeSet;
-};
 struct Dispatcher SelectDispatcher = {
 	selectInit,
 	selectAdd,
@@ -85,9 +85,9 @@ static int selectDispatcher(struct EventLoop* evLoop, int timeout) {
 	//对原始数据进行备份
 	fd_set retmp = data->readSet;
 	fd_set wrtmp = data->writeSet;
-	int count = select_wait(MAX, retmp, wrtmp,NULL,&val);//时间单位:s
+	int count = select(MAX, &retmp, &wrtmp,NULL,&val);//时间单位:s
 	if (count == -1) {
-		perror("select_wait");
+		perror("select");
 		exit(0);
 	}
 	for (int i = 0; i < MAX; ++i) {

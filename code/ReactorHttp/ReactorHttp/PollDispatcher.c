@@ -99,9 +99,9 @@ static int pollModify(struct Channel* channel, struct EventLoop* evLoop) {
 
 static int pollDispatcher(struct EventLoop* evLoop, int timeout) {
 	struct PollData* data = (struct PollData*)evLoop->dispatcherData;
-	int count = poll_wait(data->fds, data->maxfd + 1, timeout * 1000);//时间单位:s
+	int count = poll(data->fds, data->maxfd + 1, timeout * 1000);//时间单位:s
 	if (count == -1) {
-		perror("poll_wait");
+		perror("poll");
 		exit(0);
 	}
 	for (int i = 0; i < data->maxfd+1; ++i) {
