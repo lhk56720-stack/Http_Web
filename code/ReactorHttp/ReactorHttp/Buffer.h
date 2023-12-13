@@ -15,3 +15,5 @@ void bufferExtendRoom(struct Buffer* buf, int newSize);
 int getBufferReadSize(struct Buffer* buf);
 //得到剩余的可写的内存容量
 int getBufferWriteSize(struct Buffer* buf);
+//1.直接写内存
+int bufferAppendData(struct Buffer* buf, const char* data, int size);

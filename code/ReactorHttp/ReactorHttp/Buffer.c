@@ -39,7 +39,7 @@ void bufferExtendRoom(struct Buffer* buf,int newSize)
 	}
 	//3.内存不够，需要扩容
 	else {
-		void* tmp = relloc(buf->data, buf->capacity + newSize);
+		void* tmp = realloc(buf->data, buf->capacity + newSize);
 		if (tmp==NULL)
 			return;
 		memset(tmp + buf->capacity, 0, newSize);
@@ -57,4 +57,15 @@ int getBufferReadSize(struct Buffer* buf)
 int getBufferWriteSize(struct Buffer* buf)
 {
 	return buf->capacity - buf->writePos;
+}
+
+int bufferAppendData(struct Buffer* buf, const char* data, int size)
+{
+	if (buf == NULL || data == NULL || data <= 0)
+		return -1;
+	//扩容
+	bufferAppendData(buf, data, size);
+	memcpy(buf->data + buf->writePos, data, size);
+	buf->writePos += size;
+	return 0;
 }
