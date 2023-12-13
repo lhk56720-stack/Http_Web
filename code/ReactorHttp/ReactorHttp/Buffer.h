@@ -9,3 +9,9 @@ struct Buffer {
 struct Buffer* bufferInit(int size);
 //销毁buffer内存
 void bufferDestroy(struct Buffer* buf);
+//扩容
+void bufferExtendRoom(struct Buffer* buf, int newSize);
+//得到剩余的可读的内存容量
+int getBufferReadSize(struct Buffer* buf);
+//得到剩余的可写的内存容量
+int getBufferWriteSize(struct Buffer* buf);
