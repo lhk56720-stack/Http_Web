@@ -123,13 +123,17 @@ int eventLoopProcessTask(struct EventLoop* evLoop)
 	//取出头结点
 	struct ChannelElement* head = evLoop->head;
 	while (head != NULL) {
+		struct Channel* channel = head->channel;
 		switch (head->type) {
-		case ADD:
-			break;
-		case DELETE:
-			break;
-		case MODIFY:
-			break;
+			case ADD:
+				eventLoopAdd(evLoop, channel);
+				break;
+			case DELETE:
+				eventLoopRemove(evLoop, channel);
+				break;
+			case MODIFY:
+				eventLoopModify(evLoop, channel);
+				break;
 		}
 		struct ChannelElement* tmp = head;
 		head = head->next;
@@ -139,4 +143,42 @@ int eventLoopProcessTask(struct EventLoop* evLoop)
 	evLoop->head = evLoop->tail = NULL;
 	pthread_mutex_unlock(&evLoop->mutex);
 	return 0;
+}
+
+int eventLoopAdd(struct EventLoop* evLoop, struct Channel* channel)
+{
+	int fd = channel->fd;
+	struct ChannelMap* channelMap = evLoop->channelMap;
+	if (fd >= channelMap->size) {
+		//扩容
+		if (!makeMapRoom(channelMap, fd, sizeof(struct ChannelMap*))) {
+			perror("makeMapRoom");
+			exit(0);
+		}
+	}
+	if (channelMap->list[fd] == NULL) {
+		channelMap->list[fd] = channel;
+		evLoop->dispatcher->add(channel, evLoop);
+	}
+	return 0;
+}
+
+int eventLoopRemove(struct EventLoop* evLoop, struct Channel* channel)
+{
+	int fd = channel->fd;
+	struct ChannelMap* channelMap = evLoop->channelMap;
+	if (fd >= channelMap->size)
+		return -1;
+	int ret = evLoop->dispatcher->remove(channel, evLoop);
+	return ret;
+}
+
+int eventLoopModify(struct EventLoop* evLoop, struct Channel* channel)
+{
+	int fd = channel->fd;
+	struct ChannelMap* channelMap = evLoop->channelMap;
+	if (fd >= channelMap->size||channelMap->list[fd]==NULL)
+		return -1;
+	int ret = evLoop->dispatcher->modify(channel, evLoop);
+	return ret;
 }
