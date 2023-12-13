@@ -47,3 +47,5 @@ int eventLoopProcessTask(struct EventLoop* evLoop);
 int eventLoopAdd(struct EventLoop* evLoop, struct Channel* channel);
 int eventLoopRemove(struct EventLoop* evLoop, struct Channel* channel);
 int eventLoopModify(struct EventLoop* evLoop, struct Channel* channel);
+// Õ∑≈channle
+int channelDestroy(struct EventLoop* evLoop, struct Channel* channel);

@@ -182,3 +182,15 @@ int eventLoopModify(struct EventLoop* evLoop, struct Channel* channel)
 	int ret = evLoop->dispatcher->modify(channel, evLoop);
 	return ret;
 }
+
+int channelDestroy(struct EventLoop* evLoop, struct Channel* channel)
+{
+	//删除channel和fd的对应关系
+	evLoop->channelMap->list[channel->fd] = NULL;
+	//关闭fd
+	close(channel->fd);
+	//释放channel
+	free(channel);
+	channel= NULL;
+	return 0;
+}
