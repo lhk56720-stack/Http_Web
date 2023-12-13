@@ -57,6 +57,7 @@ int eventLoopRun(struct EventLoop* evLoop)
 	//循环进行事件处理
 	while (!evLoop->isQuit) {
 		dispatcher->dispatcher(evLoop, 2);
+		eventLoopProcessTask(evLoop);
 	}
 	return 0;
 }
@@ -100,9 +101,12 @@ int eventLoopAddTask(struct EventLoop* evLoop, struct Channel* channel, int type
 	//处理节点
 	/*
 		添加任务节点的操作由主线程发起，但不能让主线程处理任务队列，需要由当前的子线程去处理
+		路径1：子线程添加任务子线程自己处理
+		路径2：主线程添加任务唤醒子线程，在唤醒子线程后子线程调用处理函数数量任务
 	*/
 	if (pthread_self() == evLoop->threadID) {
 		//当前为子线程
+		eventLoopProcessTask(evLoop);
 	}
 	else {
 		//当前为主线程
@@ -110,5 +114,29 @@ int eventLoopAddTask(struct EventLoop* evLoop, struct Channel* channel, int type
 	}
 
 
+	return 0;
+}
+
+int eventLoopProcessTask(struct EventLoop* evLoop)
+{
+	pthread_mutex_lock(&evLoop->mutex);
+	//取出头结点
+	struct ChannelElement* head = evLoop->head;
+	while (head != NULL) {
+		switch (head->type) {
+		case ADD:
+			break;
+		case DELETE:
+			break;
+		case MODIFY:
+			break;
+		}
+		struct ChannelElement* tmp = head;
+		head = head->next;
+		free(tmp);
+		tmp->next = NULL;
+	}
+	evLoop->head = evLoop->tail = NULL;
+	pthread_mutex_unlock(&evLoop->mutex);
 	return 0;
 }
