@@ -17,3 +17,4 @@ struct TcpServer* tcpServerInit(unsigned short port, int threadNum);
 //初始化监听
 struct Listener* listenerInit(unsigned short port);
 //启动服务器
+void tcpServerRun(struct TcpServer* tcp);

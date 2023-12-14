@@ -44,3 +44,22 @@ struct Listener* listenerInit(unsigned short port)
 	listener->port = port;
 	return listener;
 }
+int acceptConnection(void* arg) {
+	struct TcpServer* tcp = (struct TcpServer*)arg;
+	//和客户端建立连接
+	int cfd = accept(tcp->listener->lfd, NULL, NULL);
+	//从线程池中取出一个子线程的反应堆实例去处理这个cfd
+	struct EventLoop* evLoop = takeWorkerEventLoop(tcp->threadPool);
+
+}
+void tcpServerRun(struct TcpServer* tcp)
+{
+	//启动线程池
+	threadPoolRun(tcp->threadPool);
+	//实例化channel
+	struct Channel* channel = channelInit(tcp->listener->lfd, ReadEvent, acceptConnection, NULL, tcp);
+	//添加检测的任务
+	eventLoopAddTask(tcp->mainLoop, channel, ADD);
+	//启动反应堆模型
+
+}
