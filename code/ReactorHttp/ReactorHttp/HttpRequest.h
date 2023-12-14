@@ -31,3 +31,9 @@ struct HttpRequest {
 };
 //初始化
 struct HttpRequest* httpRequestInit();
+//资源重置
+void httpRequestReset(struct HttpRequest* req);
+void httpRequestResetEx(struct HttpRequest* req);
+//资源销毁
+void httpRequestDestroy(struct HttpRequest* req);
+	
