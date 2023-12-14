@@ -36,4 +36,9 @@ void httpRequestReset(struct HttpRequest* req);
 void httpRequestResetEx(struct HttpRequest* req);
 //资源销毁
 void httpRequestDestroy(struct HttpRequest* req);
-	
+//获取处理状态
+enum HttpRequestStatus httpRequestStatus(struct HttpRequest* req);
+//添加请求头
+void httpRequestAddHeader(struct HttpRequest* req, const char* key, const char* value);
+//根据key获取value
+char* httpRequestGetHeader(struct HttpRequest* req, const char* key);
