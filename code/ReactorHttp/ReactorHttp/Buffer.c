@@ -1,5 +1,6 @@
 #include "Buffer.h"
 #include<string.h>
+#include<sys/uio.h>
 struct Buffer* bufferInit(int size)
 {
 	struct Buffer* buffer = (struct Buffer*)malloc(sizeof(struct Buffer));
@@ -67,5 +68,32 @@ int bufferAppendData(struct Buffer* buf, const char* data, int size)
 	bufferAppendData(buf, data, size);
 	memcpy(buf->data + buf->writePos, data, size);
 	buf->writePos += size;
+	return 0;
+}
+
+int bufferSocketRead(struct Buffer* buf, int fd)
+{
+	struct iovec vec[2];
+	int writeEnable = getBufferWriteSize(buf);
+	vec[0].iov_base = buf->data + buf->writePos;
+	vec[0].iov_len = writeEnable;
+	char* tmpBuf = (char*)malloc(40960);
+	vec[1].iov_base = tmpBuf;
+	vec[1].iov_len = 40960;
+	int ret = readv(fd, vec, 2);
+	if (ret == -1) {
+		perror("readv");
+		return -1;
+	}
+	else if (ret <= writeEnable) {
+		buf->writePos += ret;
+	}
+	else {
+		buf->writePos = buf->capacity;
+		bufferAppendData(buf, tmpBuf, ret - writeEnable);
+	}
+	free(tmpBuf);
+	tmpBuf = NULL;
+
 	return 0;
 }

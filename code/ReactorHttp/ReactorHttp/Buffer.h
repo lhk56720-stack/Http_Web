@@ -17,3 +17,5 @@ int getBufferReadSize(struct Buffer* buf);
 int getBufferWriteSize(struct Buffer* buf);
 //1.直接写内存
 int bufferAppendData(struct Buffer* buf, const char* data, int size);
+//2.接收套接字数据
+int bufferSocketRead(struct Buffer* buf, int fd);
