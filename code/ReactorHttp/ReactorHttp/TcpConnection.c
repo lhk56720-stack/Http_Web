@@ -1,5 +1,15 @@
 #include "TcpConnection.h"
-
+int processRead(void* arg) {
+	struct TcpConnection* conn = (struct TcpConnection*)arg;
+	//接收数据
+	int ret=bufferSocketRead(conn->readBuf, conn->channel->fd);
+	if (ret > 0) {
+		//接收到了http请求，解析请求行
+	}
+	else {
+		//断开连接
+	}
+}
 struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 {
 	struct TcpConnection* conn = (struct TcpConnection*)malloc(sizeof(struct TcpConnection));
@@ -7,7 +17,7 @@ struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 	conn->readBuf = bufferInit(10240);
 	conn->writeBuf = bufferInit(10240);
 	sprintf(conn->name, "TcpConnection-%d", fd);
-	conn->channel = channelInit(fd, ReadEvent, processRead, NULL, NULL);
+	conn->channel = channelInit(fd, ReadEvent, processRead, NULL, conn);
 	eventLoopAddTask(evLoop, conn->channel, ADD);
 	return conn;
 }
