@@ -183,7 +183,7 @@ bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf, struct Ht
 		//判断是否解析完毕，完毕则做出数据回复
 		if (req->curStatus == ParseReqDone) {
 			//根据解析出的数据对客户端的请求做出处理
-			processHttpRequest(req);
+			processHttpRequest(req,response);
 			//组织响应数据发送给客户端
 			httpResponsePrepareMsg(response, sendBuf, socket);
 		}
@@ -194,7 +194,7 @@ bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf, struct Ht
 }
 
 //处理基于get的http请求
-int processHttpRequest(struct HttpRequest* req)
+int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 {
 	if (strcasecmp(req->method, "get") != 0) {
 		//不做处理
@@ -216,20 +216,116 @@ int processHttpRequest(struct HttpRequest* req)
 		//文件不存在	返回404
 		//sendHeadMsg(cfd, 404, "Not Found", getFileType(".html"), -1);	//指定参数-1浏览器自动读取长度
 		//sendFile("404.html", cfd);
-		return -1;
+		strcpy(response->fileName, "404.html");
+		response->statusCode = NotFound;
+		strcpy(response->StatusMsg, "Not Found");
+		//响应头
+		httpResponseAddHeader(response, "Content-type", getFileType(".html"));
+		response->sendDataFunc = sendFile;
+		return 0;
 	}
+	strcpy(response->fileName, file);
+	response->statusCode = OK;
+	strcpy(response->StatusMsg, "OK");
 	//判断文件类型
 	if (S_ISDIR(st.st_mode)) {
 		//把目录中的内容发送给客户端
 		/*sendHeadMsg(cfd, 200, "OK", getFileType(".html"), -1);
 		sendDir(file, cfd);*/
+		//响应头
+		httpResponseAddHeader(response, "Content-type", getFileType(".html"));
+		response->sendDataFunc = sendDir;
 	}
 	else {
 		//把文件中的内容发送给客户端
 		/*sendHeadMsg(cfd, 200, "OK", getFileType(file), st.st_size);
 		sendFile(file, cfd);*/
+		//响应头
+		char tmp[16] = { 0 };
+		sprintf("%ld", st.st_size);
+		httpResponseAddHeader(response, "Content-type", getFileType(file));
+		httpResponseAddHeader(response, "Content-length", tmp);
+		response->sendDataFunc = sendFile;
 	}
 
+	return 0;
+}
+
+
+int sendFile(const char* fileName, int cfd)
+{
+	//1.打开文件
+	int fp = open(fileName, O_RDONLY);
+	assert(fp);
+#if 0
+	while (0)
+	{
+		//每次从文件中读取1k数据
+		char buf[1024];
+		int len = read(fp, buf, sizeof buf);
+		if (len > 0) {
+			send(cfd, buf, len, 0);
+			usleep(10);		//控制发送端速度
+		}
+		else if (len == 0) {
+			//数据读取完毕
+			break;
+		}
+		else
+		{
+			perror("read");
+		}
+
+	}
+#else
+	off_t offset = 0;		//使用int加载失败
+	int size = lseek(fp, 0, SEEK_END);
+	lseek(fp, 0, SEEK_SET);
+	while (offset < size) {
+		int ret = sendfile(cfd, fp, &offset, size);		//号称零拷贝
+		if (ret == -1) {
+			perror("sendfile");
+		}
+	}
+
+#endif
+	close(fp);
+	return 0;
+}
+
+int sendDir(const char* dirName, int cfd)
+{
+	char buf[1024 * 4];
+	sprintf(buf, "<html><head><title>%s</title></head><body><table>", dirName);
+	struct dirent** namelist;
+	int num = scandir(dirName, &namelist, NULL, alphasort);
+	for (int i = 0; i < num; ++i) {
+		//取出文件名
+		char* name = namelist[i]->d_name;
+		struct stat st;
+		char subPath[1024] = { 0 };
+		sprintf(subPath, "%s/%s", dirName, name);
+		stat(subPath, &st);
+		if (S_ISDIR(st.st_mode)) {
+			//目录处理方式
+			sprintf(buf + strlen(buf),
+				"<tr><td><a href=\"%s/\">%s</a></td><td>%ld</td></tr>",			//目录需要加/
+				name, name, st.st_size);
+		}
+		else
+		{
+			//文件处理方式
+			sprintf(buf + strlen(buf),
+				"<tr><td><a href=\"%s\">%s</a></td><td>%ld</td></tr>",
+				name, name, st.st_size);
+
+		}
+		send(cfd, buf, strlen(buf), 0);
+		memset(buf, 0, sizeof buf);
+		free(namelist[i]);
+	}
+	sprintf(buf + strlen(buf), "</table></body></html>");
+	free(namelist);
 	return 0;
 }
 
@@ -272,6 +368,47 @@ void decodeMsg(char* to, char* from)
 
 	}
 	*to = '\0';
+}
+
+const char* getFileType(const char* name)
+{
+	// a.jpg a.mp4 a.html
+	// 自右向左查找‘.’字符, 如不存在返回NULL
+	const char* dot = strrchr(name, '.');
+	if (dot == NULL)
+		return "text/plain; charset=utf-8";	// 纯文本
+	if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0)
+		return "text/html; charset=utf-8";
+	if (strcmp(dot, ".jpg") == 0 || strcmp(dot, ".jpeg") == 0)
+		return "image/jpeg";
+	if (strcmp(dot, ".gif") == 0)
+		return "image/gif";
+	if (strcmp(dot, ".png") == 0)
+		return "image/png";
+	if (strcmp(dot, ".css") == 0)
+		return "text/css";
+	if (strcmp(dot, ".au") == 0)
+		return "audio/basic";
+	if (strcmp(dot, ".wav") == 0)
+		return "audio/wav";
+	if (strcmp(dot, ".avi") == 0)
+		return "video/x-msvideo";
+	if (strcmp(dot, ".mov") == 0 || strcmp(dot, ".qt") == 0)
+		return "video/quicktime";
+	if (strcmp(dot, ".mpeg") == 0 || strcmp(dot, ".mpe") == 0)
+		return "video/mpeg";
+	if (strcmp(dot, ".vrml") == 0 || strcmp(dot, ".wrl") == 0)
+		return "model/vrml";
+	if (strcmp(dot, ".midi") == 0 || strcmp(dot, ".mid") == 0)
+		return "audio/midi";
+	if (strcmp(dot, ".mp3") == 0)
+		return "audio/mpeg";
+	if (strcmp(dot, ".ogg") == 0)
+		return "application/ogg";
+	if (strcmp(dot, ".pac") == 0)
+		return "application/x-ns-proxy-autoconfig";
+
+	return "text/plain; charset=utf-8";
 }
 
 

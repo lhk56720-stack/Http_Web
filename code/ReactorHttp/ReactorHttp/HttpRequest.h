@@ -52,9 +52,16 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf);
 //解析http请求协议
 bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf,struct HttpResponse* response,struct Buffer* sendBuf,int socket);
 //处理http请求协议
-int processHttpRequest(struct HttpRequest* req);
+int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response);
 
+
+
+//发送文件
+int sendFile(const char* fileName, int cfd);
+//发送目录
+int sendDir(const char* dirName, int cfd);
 
 //解码字符串
 void decodeMsg(char* to, char* from);
 int hexToDec(char c);
+const char* getFileType(const char* name);
