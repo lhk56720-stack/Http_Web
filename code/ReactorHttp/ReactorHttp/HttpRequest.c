@@ -1,6 +1,7 @@
 #include "HttpRequest.h"
 #include<stdio.h>
 #include<strings.h>
+#include<assert.h>
 #define HeaderSize 16
 struct HttpRequest* httpRequestInit()
 {
@@ -67,7 +68,20 @@ char* httpRequestGetHeader(struct HttpRequest* req, const char* key)
 	}
 	return NULL;
 }
-
+//拆分请求行
+char* splitRequestLine(const char* start,const char* end,const char* sub,char** ptr) {
+	char* space = end;
+	if (sub != NULL) {
+		space = memmem(start, end - start, sub, strlen(sub));
+		assert(space != NULL);
+	}
+	int length = space - start;
+	char* tmp = (char*)malloc(length + 1);	//给\0留空间
+	strncpy(tmp, start, length);
+	tmp[length] = '\0';
+	*ptr = tmp;
+	return space + 1;
+}
 bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
 {
 	//读出请求行,保存字符串结束地址
@@ -77,6 +91,10 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
 	//请求行总长度
 	int lineSize = end - start;
 	if (lineSize) {
+		start = splitRequestLine(start, end, " ", &req->method);
+		start = splitRequestLine(start, end, " ", &req->url);
+		splitRequestLine(start, end, NULL, &req->version);
+#if 0
 		//请求方式	找到空格
 		char* space = memmem(start, lineSize, " ", 1);
 		int methodSize = space - start;
@@ -97,6 +115,7 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
 		req->version = (char*)malloc(end - start + 1);	//给\0留空间
 		strncpy(req->version, start, end - start);
 		req->method[end - start] = '\0';
+#endif
 
 		//为解析请求头做准备
 		readBuf->readPos += lineSize+2;
