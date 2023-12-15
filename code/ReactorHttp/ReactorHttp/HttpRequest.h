@@ -1,6 +1,7 @@
 #pragma once
 #include <stdbool.h>
 #include"Buffer.h"
+#include"HttpResPonse.h"
 //请求头键值对
 struct HttpRequestHead
 {
@@ -49,7 +50,7 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf);
 //解析请求头
 bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf);
 //解析http请求协议
-bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf);
+bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf,struct HttpResponse* response,struct Buffer* sendBuf,int socket);
 //处理http请求协议
 int processHttpRequest(struct HttpRequest* req);
 

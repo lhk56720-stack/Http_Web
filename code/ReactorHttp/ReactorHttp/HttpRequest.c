@@ -160,7 +160,7 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf)
 	return false;
 }
 
-bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf)
+bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf, struct HttpResponse* response, struct Buffer* sendBuf, int socket)
 {
 	bool flag = true;
 	while (req->curStatus!=ParseReqDone)
@@ -183,7 +183,9 @@ bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf)
 		//判断是否解析完毕，完毕则做出数据回复
 		if (req->curStatus == ParseReqDone) {
 			//根据解析出的数据对客户端的请求做出处理
+			processHttpRequest(req);
 			//组织响应数据发送给客户端
+			httpResponsePrepareMsg(response, sendBuf, socket);
 		}
 	}
 	//状态还原

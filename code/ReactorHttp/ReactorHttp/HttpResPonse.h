@@ -1,4 +1,5 @@
 #pragma once
+#include"Buffer.h"
 //定义状态码
 enum HttpStatusCode
 {
@@ -21,6 +22,7 @@ struct HttpResponse {
 	//状态行:状态码，状态描述
 	enum HttpStatusCode statusCode;
 	char StatusMsg[128];
+	char fileName[128];
 	//响应头-键值对
 	struct ResponseHeader* headers;
 	int headerNum;
@@ -32,3 +34,5 @@ struct HttpResponse* httpResponseInit();
 void httpResponseDestroy(struct HttpResponse* response);
 //添加响应头
 void httpResponseAddHeader(struct HttpResponse* response, const char* key, const char* value);
+//组织http响应数据
+void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBuf, int socket);
