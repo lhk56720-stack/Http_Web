@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<strings.h>
 #include<assert.h>
+#include<sys/stat.h>
 #define HeaderSize 16
 struct HttpRequest* httpRequestInit()
 {
@@ -189,3 +190,86 @@ bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf)
 	req->curStatus = ParseReqLine;
 	return flag;
 }
+
+//处理基于get的http请求
+int processHttpRequest(struct HttpRequest* req)
+{
+	if (strcasecmp(req->method, "get") != 0) {
+		//不做处理
+		return -1;
+	}
+	decodeMsg(req->url, req->url);
+	//处理客户端请求的静态资源(目录或者文件)
+	char* file = NULL;
+	if (strcmp(req->url, "/") == 0) {
+		file = "./";
+	}
+	else {
+		file = req->url + 1;
+	}
+	//获取文件属性
+	struct stat st;
+	int ret = stat(file, &st);
+	if (ret == -1) {
+		//文件不存在	返回404
+		//sendHeadMsg(cfd, 404, "Not Found", getFileType(".html"), -1);	//指定参数-1浏览器自动读取长度
+		//sendFile("404.html", cfd);
+		return -1;
+	}
+	//判断文件类型
+	if (S_ISDIR(st.st_mode)) {
+		//把目录中的内容发送给客户端
+		/*sendHeadMsg(cfd, 200, "OK", getFileType(".html"), -1);
+		sendDir(file, cfd);*/
+	}
+	else {
+		//把文件中的内容发送给客户端
+		/*sendHeadMsg(cfd, 200, "OK", getFileType(file), st.st_size);
+		sendFile(file, cfd);*/
+	}
+
+	return 0;
+}
+
+// 将字符转换为整形数
+int hexToDec(char c)
+{
+	if (c >= '0' && c <= '9')
+		return c - '0';
+	if (c >= 'a' && c <= 'f')
+		return c - 'a' + 10;
+	if (c >= 'A' && c <= 'F')
+		return c - 'A' + 10;
+
+	return 0;
+}
+
+// 解码
+// to 存储解码之后的数据, 传出参数, from被解码的数据, 传入参数
+void decodeMsg(char* to, char* from)
+{
+	for (; *from != '\0'; ++to, ++from)
+	{
+		// isxdigit -> 判断字符是不是16进制格式, 取值在 0-f
+		// Linux%E5%86%85%E6%A0%B8.jpg
+		if (from[0] == '%' && isxdigit(from[1]) && isxdigit(from[2]))
+		{
+			// 将16进制的数 -> 十进制 将这个数值赋值给了字符 int -> char
+			// B2 == 178
+			// 将3个字符, 变成了一个字符, 这个字符就是原始数据
+			*to = hexToDec(from[1]) * 16 + hexToDec(from[2]);
+
+			// 跳过 from[1] 和 from[2] 因此在当前循环中已经处理过了
+			from += 2;
+		}
+		else
+		{
+			// 字符拷贝, 赋值
+			*to = *from;
+		}
+
+	}
+	*to = '\0';
+}
+
+

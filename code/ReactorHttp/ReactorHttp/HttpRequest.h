@@ -50,3 +50,10 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf);
 bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf);
 //解析http请求协议
 bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf);
+//处理http请求协议
+int processHttpRequest(struct HttpRequest* req);
+
+
+//解码字符串
+void decodeMsg(char* to, char* from);
+int hexToDec(char c);
