@@ -57,9 +57,9 @@ int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response);
 
 
 //发送文件
-int sendFile(const char* fileName, int cfd);
+void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd);
 //发送目录
-int sendDir(const char* dirName, int cfd);
+void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd);
 
 //解码字符串
 void decodeMsg(char* to, char* from);

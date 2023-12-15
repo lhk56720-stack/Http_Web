@@ -3,6 +3,9 @@
 #include<strings.h>
 #include<assert.h>
 #include<sys/stat.h>
+#include<dirent.h>
+#include<fcntl.h>
+#include<unistd.h>
 #define HeaderSize 16
 struct HttpRequest* httpRequestInit()
 {
@@ -252,19 +255,20 @@ int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 }
 
 
-int sendFile(const char* fileName, int cfd)
+void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 {
 	//1.打开文件
 	int fp = open(fileName, O_RDONLY);
 	assert(fp);
-#if 0
+#if 1
 	while (0)
 	{
 		//每次从文件中读取1k数据
 		char buf[1024];
 		int len = read(fp, buf, sizeof buf);
 		if (len > 0) {
-			send(cfd, buf, len, 0);
+			//send(cfd, buf, len, 0);
+			bufferAppendData(sendBuf, buf, len);
 			usleep(10);		//控制发送端速度
 		}
 		else if (len == 0) {
@@ -273,6 +277,7 @@ int sendFile(const char* fileName, int cfd)
 		}
 		else
 		{
+			close(fp);
 			perror("read");
 		}
 
@@ -293,7 +298,7 @@ int sendFile(const char* fileName, int cfd)
 	return 0;
 }
 
-int sendDir(const char* dirName, int cfd)
+void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 {
 	char buf[1024 * 4];
 	sprintf(buf, "<html><head><title>%s</title></head><body><table>", dirName);
@@ -320,7 +325,8 @@ int sendDir(const char* dirName, int cfd)
 				name, name, st.st_size);
 
 		}
-		send(cfd, buf, strlen(buf), 0);
+		//send(cfd, buf, strlen(buf), 0);
+		bufferAppendData(sendBuf, buf, strlen(buf));
 		memset(buf, 0, sizeof buf);
 		free(namelist[i]);
 	}
