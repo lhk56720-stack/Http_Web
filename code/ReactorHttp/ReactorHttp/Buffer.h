@@ -19,3 +19,5 @@ int getBufferWriteSize(struct Buffer* buf);
 int bufferAppendData(struct Buffer* buf, const char* data, int size);
 //2.接收套接字数据
 int bufferSocketRead(struct Buffer* buf, int fd);
+//根据\r\n取出一行，找到其在数据块中的位置，返回位置信息
+char* bufferFindLine(struct Buffer* buf);

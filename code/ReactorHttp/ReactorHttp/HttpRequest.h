@@ -1,4 +1,6 @@
 #pragma once
+#include <stdbool.h>
+#include"Buffer.h"
 //请求头键值对
 struct HttpRequestHead
 {
@@ -42,3 +44,6 @@ enum HttpRequestStatus httpRequestStatus(struct HttpRequest* req);
 void httpRequestAddHeader(struct HttpRequest* req, const char* key, const char* value);
 //根据key获取value
 char* httpRequestGetHeader(struct HttpRequest* req, const char* key);
+//解析请求行
+bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf);
+//解析请求头

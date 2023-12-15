@@ -97,3 +97,11 @@ int bufferSocketRead(struct Buffer* buf, int fd)
 
 	return 0;
 }
+
+char* bufferFindLine(struct Buffer* buf)
+{
+	//strstr	大字符串中匹配子字符串(遇到\0结束）
+	//memmem	大数据块中匹配子数据块(需要指定子数据块大小)
+	char* ptr=memmem(buf->data + buf->readPos, getBufferReadSize(buf), "\r\n", 2);
+	return ptr;
+}

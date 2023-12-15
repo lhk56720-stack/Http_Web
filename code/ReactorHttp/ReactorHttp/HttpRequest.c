@@ -67,3 +67,42 @@ char* httpRequestGetHeader(struct HttpRequest* req, const char* key)
 	}
 	return NULL;
 }
+
+bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
+{
+	//读出请求行,保存字符串结束地址
+	char* end = bufferFindLine(readBuf);
+	//保存字符串起始地址
+	char* start = readBuf->data + readBuf->readPos;
+	//请求行总长度
+	int lineSize = end - start;
+	if (lineSize) {
+		//请求方式	找到空格
+		char* space = memmem(start, lineSize, " ", 1);
+		int methodSize = space - start;
+		req->method = (char*)malloc(methodSize + 1);	//给\0留空间
+		strncpy(req->method, start, methodSize);
+		req->method[methodSize] = '\0';
+
+		//请求的静态资源	找到空格
+		start = space + 1;
+		space = memmem(start, end-start, " ", 1);
+		int urlSize = space - start;
+		req->url = (char*)malloc(urlSize + 1);	//给\0留空间
+		strncpy(req->url, start, urlSize);
+		req->method[urlSize] = '\0';
+
+		//请求http版本
+		start = space + 1;
+		req->version = (char*)malloc(end - start + 1);	//给\0留空间
+		strncpy(req->version, start, end - start);
+		req->method[end - start] = '\0';
+
+		//为解析请求头做准备
+		readBuf->readPos += lineSize+2;
+		//修改当前状态
+		req->curStatus++;
+		return true;
+	}
+	return false;
+}
