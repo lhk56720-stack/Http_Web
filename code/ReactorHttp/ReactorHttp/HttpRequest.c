@@ -269,6 +269,9 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 		if (len > 0) {
 			//send(cfd, buf, len, 0);
 			bufferAppendData(sendBuf, buf, len);
+#ifndef MSG_SEND_AUTO
+			bufferSendData(sendBuf, cfd);
+#endif
 			usleep(10);		//控制发送端速度
 		}
 		else if (len == 0) {
@@ -327,10 +330,18 @@ void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 		}
 		//send(cfd, buf, strlen(buf), 0);
 		bufferAppendData(sendBuf, buf, strlen(buf));
+#ifndef MSG_SEND_AUTO
+		bufferSendData(sendBuf, cfd);
+#endif
 		memset(buf, 0, sizeof buf);
 		free(namelist[i]);
 	}
-	sprintf(buf + strlen(buf), "</table></body></html>");
+	sprintf(buf, "</table></body></html>");
+	//send(cfd, buf, strlen(buf), 0);
+	bufferAppendData(sendBuf, buf, strlen(buf));
+#ifndef MSG_SEND_AUTO
+	bufferSendData(sendBuf, cfd);
+#endif
 	free(namelist);
 	return 0;
 }

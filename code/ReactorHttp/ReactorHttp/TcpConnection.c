@@ -6,8 +6,10 @@ int processRead(void* arg) {
 	if (ret > 0) {
 		//接收到了http请求，解析请求行
 		int socket = conn->channel->fd;
+#ifdef MSG_SEND_AUTO
 		writeEventEnable(conn->channel, true);
 		eventLoopAddTask(conn->evLoop, conn->channel, MODIFY);
+#endif 
 		bool flag = parseHttpRequest(conn->request, conn->readBuf, conn->response, conn->writeBuf, socket);
 		if (!flag) {
 			//解析失败
@@ -15,8 +17,10 @@ int processRead(void* arg) {
 			bufferAppendData(conn->writeBuf, errMsg, strlen(errMsg));
 		}
 	}
+#ifndef MSG_SEND_AUTO
 	//断开连接
 	eventLoopAddTask(conn->evLoop, conn->channel, DELETE);
+#endif
 }
 int processWrite(void* arg) {
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
