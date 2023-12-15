@@ -1,0 +1,10 @@
+*.pdf
+*.user
+*.vs
+*.sln
+*.vcxproj
+code/ReactorHttp/ReactorHttp/bin/
+code/ReactorHttp/ReactorHttp/obj/
+code/SimpleHttp/SimpleHttp/bin/
+code/SimpleHttp/SimpleHttp/obj/
+projectcode/

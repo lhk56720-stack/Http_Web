@@ -47,3 +47,4 @@ char* httpRequestGetHeader(struct HttpRequest* req, const char* key);
 //解析请求行
 bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf);
 //解析请求头
+bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf);

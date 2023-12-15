@@ -125,3 +125,36 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
 	}
 	return false;
 }
+
+bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf)
+{
+	char* end = bufferFindLine(readBuf);
+	if (end != NULL) {
+		char* start = readBuf->data + readBuf->readPos;
+		int lineSize = end - start;
+		//基于冒号搜索
+		char* mid = memmem(start, lineSize, ": ", 2);
+		if (mid != NULL) {
+			char* key = malloc(mid - start + 1);
+			strncpy(key, start, mid - start);
+			key[mid - start] = '\0';
+
+			char* value = malloc(end - mid - 2);
+			strncpy(value, mid + 2, end - mid - 2);
+			key[end - mid - 2] = '\0';
+
+			httpRequestAddHeader(req, key, value);
+			//为下一段解析做准备
+			readBuf->readPos += lineSize + 2;
+		}
+		else
+		{
+			//请求头解析完毕，跳过空行
+			readBuf->readPos += 2;
+			//修改解析状态
+			req->curStatus = ParseReqDone; 
+		}
+		return true;
+	}
+	return false;
+}
