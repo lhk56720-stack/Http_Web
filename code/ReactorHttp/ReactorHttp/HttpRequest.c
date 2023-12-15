@@ -158,3 +158,34 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf)
 	}
 	return false;
 }
+
+bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf)
+{
+	bool flag = true;
+	while (req->curStatus!=ParseReqDone)
+	{
+		switch (req->curStatus) {
+		case ParseReqLine:
+			flag=parseHttpRequestLine(req, readBuf);
+			break;
+		case ParseReqHead:
+			flag= parseHttpRequestHeader(req, readBuf);
+		case ParseReqBody:
+			break;
+		case ParseReqDone:
+			break;
+		default:
+			break;	
+		}
+		if (!flag)
+			return flag;
+		//判断是否解析完毕，完毕则做出数据回复
+		if (req->curStatus == ParseReqDone) {
+			//根据解析出的数据对客户端的请求做出处理
+			//组织响应数据发送给客户端
+		}
+	}
+	//状态还原
+	req->curStatus = ParseReqLine;
+	return flag;
+}
