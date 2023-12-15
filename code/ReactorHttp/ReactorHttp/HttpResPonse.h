@@ -28,3 +28,7 @@ struct HttpResponse {
 };
 //初始化
 struct HttpResponse* httpResponseInit();
+//销毁
+void httpResponseDestroy(struct HttpResponse* response);
+//添加响应头
+void httpResponseAddHeader(struct HttpResponse* response, const char* key, const char* value);

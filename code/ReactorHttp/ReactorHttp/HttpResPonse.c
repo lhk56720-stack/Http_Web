@@ -16,3 +16,23 @@ struct HttpResponse* httpResponseInit()
 	response->sendDataFunc = NULL;
 	return response;
 }
+
+void httpResponseDestroy(struct HttpResponse* response)
+{
+	if (response != NULL) {
+		free(response->headers);
+		response->headers = NULL;
+		free(response);
+		response = NULL;
+	}
+}
+
+void httpResponseAddHeader(struct HttpResponse* response, const char* key, const char* value)
+{
+	if (response == NULL || key == NULL || value == NULL)
+		return;
+	strcpy(response->headers[response->headerNum].key, key);
+	strcpy(response->headers[response->headerNum].value, value);
+	response->headerNum++;
+
+}
