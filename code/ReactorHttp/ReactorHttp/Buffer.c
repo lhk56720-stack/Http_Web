@@ -105,3 +105,18 @@ char* bufferFindLine(struct Buffer* buf)
 	char* ptr=memmem(buf->data + buf->readPos, getBufferReadSize(buf), "\r\n", 2);
 	return ptr;
 }
+
+int bufferSendData(struct Buffer* buf, int socket)
+{
+	//判断有无数据
+	int readEnable = getBufferReadSize(buf);
+	if (readEnable > 0) {
+		int count = send(socket, buf->data + buf->readPos, readEnable, 0);
+		if (count) {
+			buf->readPos += count;
+			usleep(1);
+		}
+		return count;
+	}
+	return 0;
+}

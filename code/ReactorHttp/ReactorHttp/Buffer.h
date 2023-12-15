@@ -21,3 +21,5 @@ int bufferAppendData(struct Buffer* buf, const char* data, int size);
 int bufferSocketRead(struct Buffer* buf, int fd);
 //根据\r\n取出一行，找到其在数据块中的位置，返回位置信息
 char* bufferFindLine(struct Buffer* buf);
+//发送数据
+int bufferSendData(struct Buffer* buf, int socket);

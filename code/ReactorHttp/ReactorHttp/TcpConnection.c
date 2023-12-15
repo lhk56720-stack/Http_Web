@@ -6,6 +6,8 @@ int processRead(void* arg) {
 	if (ret > 0) {
 		//接收到了http请求，解析请求行
 		int socket = conn->channel->fd;
+		writeEventEnable(conn->channel, true);
+		eventLoopAddTask(conn->evLoop, conn->channel, MODIFY);
 		bool flag = parseHttpRequest(conn->request, conn->readBuf, conn->response, conn->writeBuf, socket);
 		if (!flag) {
 			//解析失败
@@ -15,6 +17,20 @@ int processRead(void* arg) {
 	}
 	//断开连接
 	eventLoopAddTask(conn->evLoop, conn->channel, DELETE);
+}
+int processWrite(void* arg) {
+	struct TcpConnection* conn = (struct TcpConnection*)arg;
+	//发送数据
+	int count=bufferSendData(conn->writeBuf, conn->channel->fd);
+	if (count > 0) {
+		//判断数据是否完全被发送
+		if (getBufferReadSize(conn->writeBuf) == 0) {
+			//不再检测写事件
+			writeEventEnable(conn->channel, false);
+			eventLoopAddTask(conn->evLoop, conn->channel, MODIFY);
+			eventLoopAddTask(conn->evLoop, conn->channel, DELETE);
+		}
+	}
 }
 struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 {
@@ -26,7 +42,7 @@ struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 	conn->request = httpRequestInit();
 	conn->response = httpResponseInit();
 	sprintf(conn->name, "TcpConnection-%d", fd);
-	conn->channel = channelInit(fd, ReadEvent, processRead, NULL, conn);
+	conn->channel = channelInit(fd, ReadEvent, processRead, processWrite, conn);
 	eventLoopAddTask(evLoop, conn->channel, ADD);
 	return conn;
 }
