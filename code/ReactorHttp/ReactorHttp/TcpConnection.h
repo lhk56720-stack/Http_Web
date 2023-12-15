@@ -17,3 +17,5 @@ struct TcpConnection {
 };
 //初始化
 struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop);
+//资源释放
+int tcpConnectionDestroy(void* arg);

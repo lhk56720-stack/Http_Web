@@ -1,12 +1,13 @@
 #include "Channel.h"
 
-struct Channel* channelInit(int fd, int events, handleFunc readfunc, handleFunc writefun, void* arg)
+struct Channel* channelInit(int fd, int events, handleFunc readFunc, handleFunc writeFun, handleFunc destroyFunc, void* arg)
 {
 	struct Channel* channel = (struct Channel*)malloc(sizeof(struct Channel));
 	channel->fd = fd;
 	channel->events = events;
-	channel->readCallback = readfunc;
-	channel->writeCallback = writefun;
+	channel->readCallback = readFunc;
+	channel->writeCallback = writeFun;
+	channel->destroyCallback = destroyFunc;
 	channel->arg = arg;
 	return channel;
 }

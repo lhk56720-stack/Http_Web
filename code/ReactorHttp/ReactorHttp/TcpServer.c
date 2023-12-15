@@ -60,7 +60,7 @@ void tcpServerRun(struct TcpServer* tcp)
 	//启动线程池
 	threadPoolRun(tcp->threadPool);
 	//实例化channel
-	struct Channel* channel = channelInit(tcp->listener->lfd, ReadEvent, acceptConnection, NULL, tcp);
+	struct Channel* channel = channelInit(tcp->listener->lfd, ReadEvent, acceptConnection, NULL, NULL, tcp);
 	//添加检测的任务
 	eventLoopAddTask(tcp->mainLoop, channel, ADD);
 	//启动反应堆模型

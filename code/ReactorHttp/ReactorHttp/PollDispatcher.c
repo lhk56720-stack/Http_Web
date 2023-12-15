@@ -90,6 +90,8 @@ static int pollModify(struct Channel* channel, struct EventLoop* evLoop) {
 			break;
 		}
 	}
+	//通过channel释放对应的TcpConnection资源
+	channel->destroyCallback(channel->arg);
 	if (i >= MAX) {
 		printf("cross the border\n");
 		return -1;

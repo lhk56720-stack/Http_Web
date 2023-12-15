@@ -46,7 +46,24 @@ struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 	conn->request = httpRequestInit();
 	conn->response = httpResponseInit();
 	sprintf(conn->name, "TcpConnection-%d", fd);
-	conn->channel = channelInit(fd, ReadEvent, processRead, processWrite, conn);
+	conn->channel = channelInit(fd, ReadEvent, processRead, processWrite, tcpConnectionDestroy, conn);
 	eventLoopAddTask(evLoop, conn->channel, ADD);
 	return conn;
+}
+
+int tcpConnectionDestroy(void* arg)
+{
+	struct TcpConnection* conn = (struct TcpConnection*)malloc(sizeof(struct TcpConnection));
+	if (conn != NULL) {
+		if (conn->readBuf && getBufferReadSize(conn->readBuf) == 0 &&
+			conn->writeBuf && getBufferWriteSize(conn->writeBuf) == 0) {
+			channelDestroy(conn->evLoop, conn->channel);
+			bufferDestroy(conn->readBuf);
+			bufferDestroy(conn->writeBuf);
+			httpRequestDestroy(conn->request);
+			httpResponseDestroy(conn->response);
+			free(conn);
+			conn = NULL;
+		}
+	}
 }

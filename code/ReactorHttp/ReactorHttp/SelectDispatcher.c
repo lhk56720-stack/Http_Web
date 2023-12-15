@@ -64,6 +64,8 @@ static int selectRemove(struct Channel* channel, struct EventLoop* evLoop) {
 		return -1;
 	}
 	selectFdClr(channel, data);
+	//通过channel释放对应的TcpConnection资源
+	channel->destroyCallback(channel->arg);
 	return 0;
 }
 static int selectModify(struct Channel* channel, struct EventLoop* evLoop) {
