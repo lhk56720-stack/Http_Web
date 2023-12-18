@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "HttpRequest.h"
 #include<stdio.h>
 #include<strings.h>
@@ -6,6 +7,9 @@
 #include<dirent.h>
 #include<fcntl.h>
 #include<unistd.h>
+#include<ctype.h>
+#include<string.h>
+#include<stdlib.h>
 #define HeaderSize 16
 struct HttpRequest* httpRequestInit()
 {
@@ -56,8 +60,8 @@ enum HttpRequestStatus httpRequestStatus(struct HttpRequest* req)
 
 void httpRequestAddHeader(struct HttpRequest* req, const char* key, const char* value)
 {
-	req->reqHeads[req->reqHeadsNum].key = key;
-	req->reqHeads[req->reqHeadsNum].value = value;
+	req->reqHeads[req->reqHeadsNum].key = (char*)key;
+	req->reqHeads[req->reqHeadsNum].value = (char*)value;
 	req->reqHeadsNum++;
 }
 
@@ -245,7 +249,7 @@ int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 		sendFile(file, cfd);*/
 		//响应头
 		char tmp[16] = { 0 };
-		sprintf("%ld", st.st_size);
+		sprintf(tmp, "%ld", st.st_size);
 		httpResponseAddHeader(response, "Content-type", getFileType(file));
 		httpResponseAddHeader(response, "Content-length", tmp);
 		response->sendDataFunc = sendFile;
@@ -298,7 +302,6 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 
 #endif
 	close(fp);
-	return 0;
 }
 
 void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
@@ -343,7 +346,6 @@ void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 	bufferSendData(sendBuf, cfd);
 #endif
 	free(namelist);
-	return 0;
 }
 
 // 将字符转换为整形数

@@ -1,7 +1,7 @@
 #pragma once
 #include <stdbool.h>
 //定义函数指针
-typedef void(*handleFunc)(void* arg);
+typedef int(*handleFunc)(void* arg);
 //定义文件描述符的读写事件
 enum FDEvent
 {

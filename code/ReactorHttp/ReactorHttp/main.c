@@ -1,5 +1,6 @@
 ﻿#include<stdio.h>
-
+#include<stdlib.h>
+#include<unistd.h>
 /*
 * argv[0]:可执行程序的名字
 * argv[1]:传递进来的第一个参数，服务器绑定的端口

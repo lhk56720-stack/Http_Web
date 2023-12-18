@@ -17,6 +17,7 @@ struct ChannelElement {
 	struct Channel* channel;
 	struct ChannelElement* next;
 };
+struct Dispatcher;
 struct EventLoop {
 	bool isQuit;	//开关指定EventLoop是否在工作
 	struct Dispatcher* dispatcher;

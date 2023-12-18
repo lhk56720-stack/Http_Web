@@ -121,4 +121,5 @@ static int pollDispatcher(struct EventLoop* evLoop, int timeout) {
 static int pollClear(struct EventLoop* evLoop) {
 	struct PollData* data = (struct PollData*)evLoop->dispatcherData;
 	free(data);
+	return 0;
 }

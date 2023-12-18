@@ -1,12 +1,13 @@
 #include "ThreadPool.h"
 #include<assert.h>
+#include"WorkThread.h"
 struct ThreadPool* threadPoolInit(struct EventLoop* mainLoop, int count)
 {
 	struct ThreadPool* pool = (struct ThreadPool*)malloc(sizeof(struct ThreadPool));
 	pool->mainLoop = mainLoop;
 	pool->isStart = false;
 	pool->threadNum = count;
-	pool->workThreads = (struct WorkThreads*)malloc(sizeof(struct WorkThreads*) * count);
+	pool->workThreads = (struct WorkThread*)malloc(sizeof(struct WorkThread) * (long unsigned int)count);
 	pool->index = 0;
 	return pool;
 }
@@ -34,7 +35,8 @@ struct EventLoop* takeWorkerEventLoop(struct ThreadPool* pool)
 	struct EventLoop* evLoop = pool->mainLoop;
 	if (pool->threadNum > 0) {
 		evLoop = pool->workThreads[pool->index].evLoop;
-		pool->index = ++pool->index % pool->threadNum;
+		pool->index++;
+		pool->index= pool->index % pool->threadNum;
 	}
 	return evLoop;
 }

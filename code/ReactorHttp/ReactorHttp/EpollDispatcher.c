@@ -1,6 +1,7 @@
 #include "Dispatcher.h"
 #include<sys/epoll.h>
 #include<stdio.h>
+#include<unistd.h>
 #define MAX 512
 
 static void* epollInit();
@@ -102,4 +103,5 @@ static int epollClear(struct EventLoop* evLoop) {
 	free(data->events);
 	close(data->epfd);
 	free(data);
+	return 0;
 } 

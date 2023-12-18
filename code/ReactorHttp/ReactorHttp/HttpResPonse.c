@@ -1,6 +1,8 @@
 #include "HttpResPonse.h"
 #include<strings.h>
 #include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 #define HeadersSize 16
 struct HttpResponse* httpResponseInit()
 {

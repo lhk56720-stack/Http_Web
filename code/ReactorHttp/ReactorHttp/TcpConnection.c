@@ -1,4 +1,6 @@
 #include "TcpConnection.h"
+#include<stdio.h>
+#include<string.h>
 int processRead(void* arg) {
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
 	//接收数据
@@ -14,13 +16,14 @@ int processRead(void* arg) {
 		if (!flag) {
 			//解析失败
 			char* errMsg = "Http/1.1 400 Bad Request\r\n\r\n";
-			bufferAppendData(conn->writeBuf, errMsg, strlen(errMsg));
+			bufferAppendData(conn->writeBuf, errMsg, (int)strlen(errMsg));
 		}
 	}
 #ifndef MSG_SEND_AUTO
 	//断开连接
 	eventLoopAddTask(conn->evLoop, conn->channel, DELETE);
 #endif
+	return 0;
 }
 int processWrite(void* arg) {
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
@@ -35,6 +38,7 @@ int processWrite(void* arg) {
 			eventLoopAddTask(conn->evLoop, conn->channel, DELETE);
 		}
 	}
+	return 0;
 }
 struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 {
@@ -53,7 +57,7 @@ struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 
 int tcpConnectionDestroy(void* arg)
 {
-	struct TcpConnection* conn = (struct TcpConnection*)malloc(sizeof(struct TcpConnection));
+	struct TcpConnection* conn = (struct TcpConnection*)arg;
 	if (conn != NULL) {
 		if (conn->readBuf && getBufferReadSize(conn->readBuf) == 0 &&
 			conn->writeBuf && getBufferWriteSize(conn->writeBuf) == 0) {
@@ -66,4 +70,5 @@ int tcpConnectionDestroy(void* arg)
 			conn = NULL;
 		}
 	}
+	return 0;
 }

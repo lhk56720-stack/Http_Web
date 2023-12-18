@@ -30,7 +30,6 @@ static void* selectInit() {
 	FD_ZERO(&data->readSet);
 	FD_ZERO(&data->writeSet);
 	return data;
-
 }
 static void selectFdSet(struct Channel* channel, struct SelectData* data) {
 	if (channel->events & ReadEvent) {
@@ -105,4 +104,5 @@ static int selectDispatcher(struct EventLoop* evLoop, int timeout) {
 static int selectClear(struct EventLoop* evLoop) {
 	struct SelectData* data = (struct SelectData*)evLoop->dispatcherData;
 	free(data);
+	return 0;
 }

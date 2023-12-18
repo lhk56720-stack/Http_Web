@@ -30,7 +30,7 @@ bool makeMapRoom(struct ChannelMap* map, int newSize, int unitSize)
 		curSize *= 2;
 	}
 	//realloc重新分配内存后会返回新内存块的首地址
-	struct Channle** tmplist = realloc(map->list, curSize * unitSize);
+	struct Channel** tmplist = realloc(map->list, curSize * unitSize);
 	if (tmplist) {
 		map->list = tmplist;
 		//初始化新扩展出的内存

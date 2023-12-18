@@ -1,13 +1,14 @@
 #include "TcpServer.h"
 #include<arpa/inet.h>
 #include"TcpConnection.h"
+#include<stdio.h>
 struct TcpServer* tcpServerInit(unsigned short port, int threadNum)
 {
 	struct TcpServer* tcpServer = (struct TcpServer*)malloc(sizeof(struct TcpServer));
 	tcpServer->mainLoop = eventLoopInit();
 	tcpServer->threadNum = threadNum;
 	tcpServer->threadPool = threadPoolInit(tcpServer->mainLoop, threadNum);
-	tcpServer->listener = tcpServerInit(port,threadNum);
+	tcpServer->listener = listenerInit(port);
 	return tcpServer;
 }
 
@@ -18,7 +19,7 @@ struct Listener* listenerInit(unsigned short port)
 	int lfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (lfd == -1) {
 		perror("socket");
-		return -1;
+		return NULL;
 	}
 	//2.启动端口复用
 	int opt = 1;
@@ -32,13 +33,13 @@ struct Listener* listenerInit(unsigned short port)
 	ret = bind(lfd, (struct sockaddr*)&addr, sizeof(addr));
 	if (ret == -1) {
 		perror("bind");
-		return -1;
+		return NULL;
 	}
 	//4.启动监听
 	ret = listen(lfd, 128);
 	if (ret == -1) {
 		perror("listen");
-		return -1;
+		return NULL;
 	}
 	//5.返回
 	listener->lfd = lfd;
@@ -53,7 +54,7 @@ int acceptConnection(void* arg) {
 	struct EventLoop* evLoop = takeWorkerEventLoop(tcp->threadPool);
 	//把cfd放到TcpConnection中处理
 	tcpConnectionInit(cfd, evLoop);
-
+	return 0;
 }
 void tcpServerRun(struct TcpServer* tcp)
 {
@@ -64,5 +65,6 @@ void tcpServerRun(struct TcpServer* tcp)
 	//添加检测的任务
 	eventLoopAddTask(tcp->mainLoop, channel, ADD);
 	//启动反应堆模型
+	eventLoopRun(tcp->mainLoop);
 
 }

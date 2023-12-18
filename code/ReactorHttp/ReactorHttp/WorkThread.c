@@ -1,5 +1,5 @@
 #include "WorkThread.h"
-
+#include<stdio.h>
 int workThreadInit(struct WorkThread* thread, int index)
 {
 	thread->evLoop = NULL;

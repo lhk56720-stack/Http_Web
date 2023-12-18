@@ -1,6 +1,7 @@
 #pragma once
 #include <stdbool.h>
 #include "WorkThread.h"
+#include<stdlib.h>
 //定义线程池
 struct ThreadPool {
 	struct EventLoop* mainLoop;	//主线程的反应堆模型

@@ -1,6 +1,11 @@
 #include "Buffer.h"
 #include<string.h>
 #include<sys/uio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<stdio.h>
+#include<sys/socket.h>
+#define _GNU_SOURCE
 struct Buffer* bufferInit(int size)
 {
 	struct Buffer* buffer = (struct Buffer*)malloc(sizeof(struct Buffer));
