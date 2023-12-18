@@ -66,5 +66,5 @@ void tcpServerRun(struct TcpServer* tcp)
 	eventLoopAddTask(tcp->mainLoop, channel, ADD);
 	//启动反应堆模型
 	eventLoopRun(tcp->mainLoop);
-
+	printf("server start...\n");
 }

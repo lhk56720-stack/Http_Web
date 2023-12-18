@@ -5,6 +5,7 @@ int processRead(void* arg) {
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
 	//接收数据
 	int ret=bufferSocketRead(conn->readBuf, conn->channel->fd);
+	printf("recv http request:%s\n", conn->readBuf->data + conn->readBuf->readPos);
 	if (ret > 0) {
 		//接收到了http请求，解析请求行
 		int socket = conn->channel->fd;
@@ -26,6 +27,7 @@ int processRead(void* arg) {
 	return 0;
 }
 int processWrite(void* arg) {
+	printf("start send data...\n");
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
 	//发送数据
 	int count=bufferSendData(conn->writeBuf, conn->channel->fd);
@@ -52,6 +54,7 @@ struct TcpConnection* tcpConnectionInit(int fd, struct EventLoop* evLoop)
 	sprintf(conn->name, "TcpConnection-%d", fd);
 	conn->channel = channelInit(fd, ReadEvent, processRead, processWrite, tcpConnectionDestroy, conn);
 	eventLoopAddTask(evLoop, conn->channel, ADD);
+	printf("connect client,threadName:%s,threadId:%s,connName:%s", evLoop->threadName, evLoop->threadID, conn->name);
 	return conn;
 }
 
@@ -70,5 +73,6 @@ int tcpConnectionDestroy(void* arg)
 			conn = NULL;
 		}
 	}
+	printf("connect over,connName:%s\n", conn->name);
 	return 0;
 }
