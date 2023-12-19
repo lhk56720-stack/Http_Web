@@ -45,14 +45,14 @@ void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBu
 	//状态行
 	char tmp[1024] = { 0 };
 	sprintf(tmp, "HTTP/1.1 %d %s\r\n", response->statusCode, response->StatusMsg);
-	bufferAppendData(sendBuf,tmp,strlen(tmp));
+	bufferAppendString(sendBuf, tmp);
 	//响应头
 	for (int i = 0; i < response->headerNum; ++i) {
 		sprintf(tmp, " % s: % s\r\n", response->headers[i].key, response->headers[i].value);
-		bufferAppendData(sendBuf, tmp, strlen(tmp));
+		bufferAppendString(sendBuf, tmp);
 	}
 	//空行
-	bufferAppendData(sendBuf, "\r\n", 2);
+	bufferAppendString(sendBuf, "\r\n");
 #ifndef MSG_SEND_AUTO
 	bufferSendData(sendBuf, socket);
 #endif

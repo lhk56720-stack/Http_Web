@@ -124,7 +124,6 @@ bool parseHttpRequestLine(struct HttpRequest* req, struct Buffer* readBuf)
 		strncpy(req->version, start, end - start);
 		req->method[end - start] = '\0';
 #endif
-
 		//为解析请求头做准备
 		readBuf->readPos += lineSize+2;
 		//修改当前状态
@@ -146,12 +145,20 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf)
 			char* key = malloc(mid - start + 1);
 			strncpy(key, start, mid - start);
 			key[mid - start] = '\0';
-
-			char* value = malloc(end - mid - 2);
+			char* value = malloc(sizeof(char)*(end - mid - 2 + 1));
+			if (key == NULL || value == NULL) {
+				if (key == NULL) {
+					perror("key");
+				}
+				if (value == NULL) {
+					perror("value");
+				}
+				return false;
+			}
 			strncpy(value, mid + 2, end - mid - 2);
-			key[end - mid - 2] = '\0';
-
+			value[end - mid - 2] = '\0';
 			httpRequestAddHeader(req, key, value);
+
 			//为下一段解析做准备
 			readBuf->readPos += lineSize + 2;
 		}
@@ -170,6 +177,7 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf)
 bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf, struct HttpResponse* response, struct Buffer* sendBuf, int socket)
 {
 	bool flag = true;
+	int i = 0;
 	while (req->curStatus!=ParseReqDone)
 	{
 		switch (req->curStatus) {
@@ -285,7 +293,6 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 		else
 		{
 			close(fp);
-			perror("read");
 		}
 
 	}
@@ -332,7 +339,7 @@ void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 
 		}
 		//send(cfd, buf, strlen(buf), 0);
-		bufferAppendData(sendBuf, buf, strlen(buf));
+		bufferAppendString(sendBuf, buf);
 #ifndef MSG_SEND_AUTO
 		bufferSendData(sendBuf, cfd);
 #endif
@@ -341,7 +348,7 @@ void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 	}
 	sprintf(buf, "</table></body></html>");
 	//send(cfd, buf, strlen(buf), 0);
-	bufferAppendData(sendBuf, buf, strlen(buf));
+	bufferAppendString(sendBuf, buf);
 #ifndef MSG_SEND_AUTO
 	bufferSendData(sendBuf, cfd);
 #endif

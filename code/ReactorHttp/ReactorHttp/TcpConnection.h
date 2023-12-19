@@ -4,7 +4,7 @@
 #include"Channel.h"
 #include"HttpRequest.h"
 #include"HttpResPonse.h"
-#define MSG_SEND_AUTO
+//#define MSG_SEND_AUTO
 struct TcpConnection {
 	struct EventLoop* evLoop;
 	struct Channel* channel;

@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "Buffer.h"
 #include<string.h>
 #include<sys/uio.h>
@@ -5,7 +6,6 @@
 #include<unistd.h>
 #include<stdio.h>
 #include<sys/socket.h>
-#define _GNU_SOURCE
 struct Buffer* bufferInit(int size)
 {
 	struct Buffer* buffer = (struct Buffer*)malloc(sizeof(struct Buffer));
@@ -70,10 +70,17 @@ int bufferAppendData(struct Buffer* buf, const char* data, int size)
 	if (buf == NULL || data == NULL || data <= 0)
 		return -1;
 	//À©ÈÝ
-	bufferAppendData(buf, data, size);
+	bufferExtendRoom(buf, size);
 	memcpy(buf->data + buf->writePos, data, size);
 	buf->writePos += size;
 	return 0;
+}
+
+int bufferAppendString(struct Buffer* buffer, const char* data)
+{
+	int size = strlen(data);
+	int ret = bufferAppendData(buffer, data, size);
+	return ret;
 }
 
 int bufferSocketRead(struct Buffer* buf, int fd)
@@ -100,7 +107,7 @@ int bufferSocketRead(struct Buffer* buf, int fd)
 	free(tmpBuf);
 	tmpBuf = NULL;
 
-	return 0;
+	return ret;
 }
 
 char* bufferFindLine(struct Buffer* buf)

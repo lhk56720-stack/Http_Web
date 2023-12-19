@@ -1,5 +1,6 @@
 #include "Channel.h"
 #include<stdlib.h>
+#include<stdio.h>
 struct Channel* channelInit(int fd, int events, handleFunc readFunc, handleFunc writeFun, handleFunc destroyFunc, void* arg)
 {
 	struct Channel* channel = (struct Channel*)malloc(sizeof(struct Channel));

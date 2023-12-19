@@ -87,8 +87,12 @@ static int epollDispatcher(struct EventLoop* evLoop, int timeout) {
 		int events = data->events[i].events;
 		int fd = data->events[i].data.fd;
 		//客户端断开连接，删除fd
-		
-		continue;
+		if (events & EPOLLERR || events & EPOLLHUP)
+		{
+			// 对方断开了连接, 删除 fd
+			// epollRemove(Channel, evLoop);
+			continue;
+		}
 		if (events & EPOLLIN) {
 			eventActivate(evLoop, fd, ReadEvent);
 		}
