@@ -209,7 +209,7 @@ bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf, struct Ht
 }
 
 //处理基于get的http请求
-int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
+bool processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 {
 	if (strcasecmp(req->method, "get") != 0) {
 		//不做处理
@@ -263,7 +263,7 @@ int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 		response->sendDataFunc = sendFile;
 	}
 
-	return 0;
+	return false;
 }
 
 
@@ -271,9 +271,9 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 {
 	//1.打开文件
 	int fp = open(fileName, O_RDONLY);
-	assert(fp);
+	assert(fp > 0);
 #if 1
-	while (0)
+	while (1)
 	{
 		//每次从文件中读取1k数据
 		char buf[1024];
@@ -284,7 +284,6 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 #ifndef MSG_SEND_AUTO
 			bufferSendData(sendBuf, cfd);
 #endif
-			usleep(10);		//控制发送端速度
 		}
 		else if (len == 0) {
 			//数据读取完毕
@@ -293,6 +292,7 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 		else
 		{
 			close(fp);
+			perror("read");
 		}
 
 	}
@@ -313,7 +313,7 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd)
 
 void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd)
 {
-	char buf[1024 * 4];
+	char buf[1024 * 4] = { 0 };
 	sprintf(buf, "<html><head><title>%s</title></head><body><table>", dirName);
 	struct dirent** namelist;
 	int num = scandir(dirName, &namelist, NULL, alphasort);

@@ -58,6 +58,7 @@ int acceptConnection(void* arg) {
 }
 void tcpServerRun(struct TcpServer* tcp)
 {
+	printf("server start...\n");
 	//启动线程池
 	threadPoolRun(tcp->threadPool);
 	//实例化channel
@@ -66,5 +67,4 @@ void tcpServerRun(struct TcpServer* tcp)
 	eventLoopAddTask(tcp->mainLoop, channel, ADD);
 	//启动反应堆模型
 	eventLoopRun(tcp->mainLoop);
-	printf("server start...\n");
 }

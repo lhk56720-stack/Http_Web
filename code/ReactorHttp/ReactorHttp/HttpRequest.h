@@ -52,7 +52,7 @@ bool parseHttpRequestHeader(struct HttpRequest* req, struct Buffer* readBuf);
 //解析http请求协议
 bool parseHttpRequest(struct HttpRequest* req, struct Buffer* readBuf,struct HttpResponse* response,struct Buffer* sendBuf,int socket);
 //处理http请求协议
-int processHttpRequest(struct HttpRequest* req, struct HttpResponse* response);
+bool processHttpRequest(struct HttpRequest* req, struct HttpResponse* response);
 
 
 

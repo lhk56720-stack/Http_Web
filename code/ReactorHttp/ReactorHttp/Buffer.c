@@ -123,7 +123,7 @@ int bufferSendData(struct Buffer* buf, int socket)
 	//判断有无数据
 	int readEnable = getBufferReadSize(buf);
 	if (readEnable > 0) {
-		int count = send(socket, buf->data + buf->readPos, readEnable, 0);
+		int count = send(socket, buf->data + buf->readPos, readEnable, MSG_NOSIGNAL);
 		if (count) {
 			buf->readPos += count;
 			usleep(1);

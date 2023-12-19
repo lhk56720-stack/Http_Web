@@ -33,18 +33,18 @@ static void* selectInit() {
 }
 static void selectFdSet(struct Channel* channel, struct SelectData* data) {
 	if (channel->events & ReadEvent) {
-		FD_SET(channel->events, &data->readSet);
+		FD_SET(channel->fd, &data->readSet);
 	}
 	if (channel->events & WriteEvent) {
-		FD_SET(channel->events, &data->writeSet);
+		FD_SET(channel->fd, &data->writeSet);
 	}
 }
 static void selectFdClr(struct Channel* channel, struct SelectData* data) {
 	if (channel->events & ReadEvent) {
-		FD_CLR(channel->events, &data->readSet);
+		FD_CLR(channel->fd, &data->readSet);
 	}
 	if (channel->events & WriteEvent) {
-		FD_CLR(channel->events, &data->writeSet);
+		FD_CLR(channel->fd, &data->writeSet);
 	}
 }
 static int selectAdd(struct Channel* channel, struct EventLoop* evLoop) {
