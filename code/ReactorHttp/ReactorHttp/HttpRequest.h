@@ -62,6 +62,6 @@ void sendFile(const char* fileName, struct Buffer* sendBuf, int cfd);
 void sendDir(const char* dirName, struct Buffer* sendBuf, int cfd);
 
 //½âÂë×Ö·û´®
-void decodeMsg(char* to, char* from);
 int hexToDec(char c);
+void decodeMsg(char* to, char* from);
 const char* getFileType(const char* name);

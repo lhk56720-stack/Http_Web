@@ -10,7 +10,7 @@
 int main(int argc, char* argv[])
 {
     if (argc < 3) {
-        printf("./SimpleHttp.out port path\n");
+        printf("./ReactorHttp.out port path\n");
         return -1;
     }
     //atoi() 将数字字符的字符串转换为整形

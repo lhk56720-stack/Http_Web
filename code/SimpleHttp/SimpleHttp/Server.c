@@ -184,6 +184,7 @@ int parseRequestLine(const char* line, int cfd)
 		return -1;
 	}
 	decodeMsg(path, path);
+	printf("backpath:%s\n", path);
 	//处理客户端请求的静态资源(目录或者文件)
 	char* file = NULL;
 	if (strcmp(path, "/") == 0) {

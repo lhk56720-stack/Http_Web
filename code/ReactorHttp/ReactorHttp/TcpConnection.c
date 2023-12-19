@@ -5,7 +5,6 @@ int processRead(void* arg) {
 	struct TcpConnection* conn = (struct TcpConnection*)arg;
 	//接收数据
 	int ret=bufferSocketRead(conn->readBuf, conn->channel->fd);
-	printf("ret=%d\n", ret);
 	printf("recv http request:%s\n", conn->readBuf->data + conn->readBuf->readPos);
 	if (ret > 0) {
 		//接收到了http请求，解析请求行

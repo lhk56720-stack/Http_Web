@@ -69,7 +69,8 @@ char* httpRequestGetHeader(struct HttpRequest* req, const char* key)
 {
 	if (req != NULL) {
 		for (int i = 0; i < req->reqHeadsNum; ++i) {
-			if (strncasecmp(req->reqHeads->key, key, strlen(key)) == 0) {
+			printf("key:%s\nreq->reqHeads[i].key:%s\n", key, req->reqHeads[i].key);
+			if (strncasecmp(req->reqHeads[i].key, key, strlen(key)) == 0) {
 				return req->reqHeads->value;
 			}
 		}
@@ -249,6 +250,7 @@ bool processHttpRequest(struct HttpRequest* req, struct HttpResponse* response)
 		sendDir(file, cfd);*/
 		//响应头
 		httpResponseAddHeader(response, "Content-type", getFileType(".html"));
+		printf("Content-type:%s\n",getFileType(".html"));
 		response->sendDataFunc = sendDir;
 	}
 	else {
@@ -401,10 +403,14 @@ const char* getFileType(const char* name)
 	// a.jpg a.mp4 a.html
 	// 自右向左查找‘.’字符, 如不存在返回NULL
 	const char* dot = strrchr(name, '.');
-	if (dot == NULL)
+	if (dot == NULL) {
 		return "text/plain; charset=utf-8";	// 纯文本
-	if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0)
+	}
+		
+	if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0) {
 		return "text/html; charset=utf-8";
+	}
+		
 	if (strcmp(dot, ".jpg") == 0 || strcmp(dot, ".jpeg") == 0)
 		return "image/jpeg";
 	if (strcmp(dot, ".gif") == 0)

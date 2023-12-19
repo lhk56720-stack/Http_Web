@@ -36,3 +36,5 @@ void httpResponseDestroy(struct HttpResponse* response);
 void httpResponseAddHeader(struct HttpResponse* response, const char* key, const char* value);
 //组织http响应数据
 void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBuf, int socket);
+//通过key查value
+char* httpResponseGetHeader(struct HttpResponse* req, const char* key);

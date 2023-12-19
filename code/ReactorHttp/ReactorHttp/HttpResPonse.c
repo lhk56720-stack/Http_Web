@@ -32,12 +32,14 @@ void httpResponseDestroy(struct HttpResponse* response)
 
 void httpResponseAddHeader(struct HttpResponse* response, const char* key, const char* value)
 {
-	if (response == NULL || key == NULL || value == NULL)
+	if (response == NULL || key == NULL || value == NULL) {
 		return;
+	}
 	strcpy(response->headers[response->headerNum].key, key);
 	strcpy(response->headers[response->headerNum].value, value);
+	printf("add,headerNum:%d,response[%d].key=%s\n", response->headerNum, response->headerNum, response->headers[response->headerNum].key);
+	printf("add,headerNum:%d,response[%d].value=%s\n", response->headerNum, response->headerNum, response->headers[response->headerNum].value);
 	response->headerNum++;
-
 }
 
 void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBuf, int socket)
@@ -48,9 +50,14 @@ void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBu
 	bufferAppendString(sendBuf, tmp);
 	//响应头
 	for (int i = 0; i < response->headerNum; ++i) {
-		sprintf(tmp, " % s: % s\r\n", response->headers[i].key, response->headers[i].value);
+		printf("show,headerNum:%d,response[%d].key=%s\n", response->headerNum, i, response->headers[i].key);
+		printf("show,headerNum:%d,response[%d].value=%s\n", response->headerNum, i, response->headers[i].value);
+		sprintf(tmp, "%s: %s\r\n", response->headers[i].key, response->headers[i].value);
 		bufferAppendString(sendBuf, tmp);
 	}
+	httpResponseGetHeader(response, "Content-type");
+	//sprintf(tmp, "Content-Type: text/html; charset=UTF-8\r\n");
+	//bufferAppendString(sendBuf, tmp);
 	//空行
 	bufferAppendString(sendBuf, "\r\n");
 #ifndef MSG_SEND_AUTO
@@ -58,4 +65,16 @@ void httpResponsePrepareMsg(struct HttpResponse* response, struct Buffer* sendBu
 #endif
 	//回复的数据
 	response->sendDataFunc(response->fileName, sendBuf, socket);
+}
+char* httpResponseGetHeader(struct HttpResponse* response, const char* key)
+{
+	if (response != NULL) {
+		for (int i = 0; i < response->headerNum; ++i) {
+			printf("key:%s\nreq->response->headers[%d].key:%s\n", key, i, response->headers[i].key);
+			if (strncasecmp(response->headers[response->headerNum].key, key, strlen(key)) == 0) {
+				return response->headers[response->headerNum].value;
+			}
+		}
+	}
+	return NULL;
 }
