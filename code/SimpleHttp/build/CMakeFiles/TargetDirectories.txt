@@ -1,0 +1,3 @@
+/home/lhk/VsCode/WebServer/code/SimpleHttp/build/CMakeFiles/SimpleHttp.dir
+/home/lhk/VsCode/WebServer/code/SimpleHttp/build/CMakeFiles/edit_cache.dir
+/home/lhk/VsCode/WebServer/code/SimpleHttp/build/CMakeFiles/rebuild_cache.dir
