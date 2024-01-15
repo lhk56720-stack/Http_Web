@@ -1,0 +1,3 @@
+/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles/ReactorHttp.dir
+/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles/edit_cache.dir
+/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles/rebuild_cache.dir
