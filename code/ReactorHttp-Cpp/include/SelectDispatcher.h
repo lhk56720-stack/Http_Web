@@ -9,7 +9,7 @@ using namespace std;
 class SelectDispatcher : public Dispatcher
 {
 public:
-    SelectDispatcher(EventLoop* evloop);
+    SelectDispatcher(EventLoop *evloop);
     ~SelectDispatcher();
     // 添加
     int add() override;

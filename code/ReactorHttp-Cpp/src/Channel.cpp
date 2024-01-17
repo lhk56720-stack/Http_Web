@@ -1,7 +1,7 @@
 #include "Channel.h"
 #include <stdlib.h>
 
-Channel::Channel(int fd, FDEvent events, handleFunc readFunc, handleFunc writeFunc, handleFunc destroyFunc, void* arg)
+Channel::Channel(int fd, FDEvent events, handleFunc readFunc, handleFunc writeFunc, handleFunc destroyFunc, void *arg)
 {
     m_arg = arg;
     m_fd = fd;

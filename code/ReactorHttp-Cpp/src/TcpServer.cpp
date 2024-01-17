@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include "Log.h"
 
-int TcpServer::acceptConnection(void* arg)
+int TcpServer::acceptConnection(void *arg)
 {
-    TcpServer* server = static_cast<TcpServer*>(arg);
+    TcpServer *server = static_cast<TcpServer *>(arg);
     // 和客户端建立连接
     int cfd = accept(server->m_lfd, NULL, NULL);
     // 从线程池中取出一个子线程的反应堆实例, 去处理这个cfd
-    EventLoop* evLoop = server->m_threadPool->takeWorkerEventLoop();
+    EventLoop *evLoop = server->m_threadPool->takeWorkerEventLoop();
     // 将cfd放到 TcpConnection中处理
     new TcpConnection(cfd, evLoop);
     return 0;
@@ -48,18 +48,18 @@ void TcpServer::setListen()
     addr.sin_family = AF_INET;
     addr.sin_port = htons(m_port);
     addr.sin_addr.s_addr = INADDR_ANY;
-    ret = bind(m_lfd, (struct sockaddr*)&addr, sizeof addr);
+    ret = bind(m_lfd, (struct sockaddr *)&addr, sizeof addr);
     if (ret == -1)
     {
         perror("bind");
-        return ;
+        return;
     }
     // 4. 设置监听
     ret = listen(m_lfd, 128);
     if (ret == -1)
     {
         perror("listen");
-        return ;
+        return;
     }
 }
 
@@ -70,7 +70,7 @@ void TcpServer::run()
     m_threadPool->run();
     // 添加检测的任务
     // 初始化一个channel实例
-    Channel* channel = new Channel(m_lfd, FDEvent::ReadEvent, acceptConnection, nullptr, nullptr, this);
+    Channel *channel = new Channel(m_lfd, FDEvent::ReadEvent, acceptConnection, nullptr, nullptr, this);
     m_mainLoop->addTask(channel, ElemType::ADD);
     // 启动反应堆模型
     m_mainLoop->run();

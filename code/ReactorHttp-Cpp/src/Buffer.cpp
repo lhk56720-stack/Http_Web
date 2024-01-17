@@ -8,9 +8,9 @@
 #include <strings.h>
 #include <sys/socket.h>
 
-Buffer::Buffer(int size):m_capacity(size)
+Buffer::Buffer(int size) : m_capacity(size)
 {
-    m_data = (char*)malloc(size);
+    m_data = (char *)malloc(size);
     bzero(m_data, size);
 }
 
@@ -44,19 +44,19 @@ void Buffer::extendRoom(int size)
     // 3. 内存不够用 - 扩容
     else
     {
-        void* temp = realloc(m_data, m_capacity + size);
+        void *temp = realloc(m_data, m_capacity + size);
         if (temp == NULL)
         {
             return; // 失败了
         }
-        memset((char*)temp + m_capacity, 0, size);
+        memset((char *)temp + m_capacity, 0, size);
         // 更新数据
-        m_data = static_cast<char*>(temp);
+        m_data = static_cast<char *>(temp);
         m_capacity += size;
     }
 }
 
-int Buffer::appendString(const char* data, int size)
+int Buffer::appendString(const char *data, int size)
 {
     if (data == nullptr || size <= 0)
     {
@@ -70,7 +70,7 @@ int Buffer::appendString(const char* data, int size)
     return 0;
 }
 
-int Buffer::appendString(const char* data)
+int Buffer::appendString(const char *data)
 {
     int size = strlen(data);
     int ret = appendString(data, size);
@@ -91,7 +91,7 @@ int Buffer::socketRead(int fd)
     int writeable = writeableSize();
     vec[0].iov_base = m_data + m_writePos;
     vec[0].iov_len = writeable;
-    char* tmpbuf = (char*)malloc(40960);
+    char *tmpbuf = (char *)malloc(40960);
     vec[1].iov_base = tmpbuf;
     vec[1].iov_len = 40960;
     int result = readv(fd, vec, 2);
@@ -112,9 +112,9 @@ int Buffer::socketRead(int fd)
     return result;
 }
 
-char* Buffer::findCRLF()
+char *Buffer::findCRLF()
 {
-    char* ptr = (char*)memmem(m_data + m_readPos, readableSize(), "\r\n", 2);
+    char *ptr = (char *)memmem(m_data + m_readPos, readableSize(), "\r\n", 2);
     return ptr;
 }
 
@@ -134,4 +134,3 @@ int Buffer::sendData(int socket)
     }
     return 0;
 }
-

@@ -25,10 +25,10 @@ void HttpResponse::addHeader(const string key, const string value)
     m_headers.insert(make_pair(key, value));
 }
 
-void HttpResponse::prepareMsg(Buffer* sendBuf, int socket)
+void HttpResponse::prepareMsg(Buffer *sendBuf, int socket)
 {
     // 状态行
-    char tmp[1024] = { 0 };
+    char tmp[1024] = {0};
     int code = static_cast<int>(m_statusCode);
     sprintf(tmp, "HTTP/1.1 %d %s\r\n", code, m_info.at(code).data());
     sendBuf->appendString(tmp);

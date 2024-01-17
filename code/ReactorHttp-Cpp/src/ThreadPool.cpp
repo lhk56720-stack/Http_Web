@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-ThreadPool::ThreadPool(EventLoop* mainLoop, int count)
+ThreadPool::ThreadPool(EventLoop *mainLoop, int count)
 {
     m_index = 0;
     m_isStart = false;
@@ -31,14 +31,14 @@ void ThreadPool::run()
     {
         for (int i = 0; i < m_threadNum; ++i)
         {
-            WorkerThread* subThread = new WorkerThread(i);
+            WorkerThread *subThread = new WorkerThread(i);
             subThread->run();
             m_workerThreads.push_back(subThread);
         }
     }
 }
 
-EventLoop* ThreadPool::takeWorkerEventLoop()
+EventLoop *ThreadPool::takeWorkerEventLoop()
 {
     assert(m_isStart);
     if (m_mainLoop->getThreadID() != this_thread::get_id())
@@ -46,7 +46,7 @@ EventLoop* ThreadPool::takeWorkerEventLoop()
         exit(0);
     }
     // 从线程池中找一个子线程, 然后取出里边的反应堆实例
-    EventLoop* evLoop = m_mainLoop;
+    EventLoop *evLoop = m_mainLoop;
     if (m_threadNum > 0)
     {
         evLoop = m_workerThreads[m_index]->getEventLoop();

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "PollDispatcher.h"
 
-PollDispatcher::PollDispatcher(EventLoop* evloop) : Dispatcher(evloop)
+PollDispatcher::PollDispatcher(EventLoop *evloop) : Dispatcher(evloop)
 {
     m_maxfd = 0;
     m_fds = new struct pollfd[m_maxNode];
@@ -19,7 +19,7 @@ PollDispatcher::PollDispatcher(EventLoop* evloop) : Dispatcher(evloop)
 
 PollDispatcher::~PollDispatcher()
 {
-    delete[]m_fds;
+    delete[] m_fds;
 }
 
 int PollDispatcher::add()
@@ -65,7 +65,7 @@ int PollDispatcher::remove()
         }
     }
     // 通过 channel 释放对应的 TcpConnection 资源
-    m_channel->destroyCallback(const_cast<void*>(m_channel->getArg()));
+    m_channel->destroyCallback(const_cast<void *>(m_channel->getArg()));
     if (i >= m_maxNode)
     {
         return -1;

@@ -5,10 +5,10 @@
 #include <stdio.h>
 #include "EpollDispatcher.h"
 
-//调用基类 Dispatcher 的构造函数，将 EventLoop* evloop 传递给基类的构造函数。
-EpollDispatcher::EpollDispatcher(EventLoop* evloop) : Dispatcher(evloop)
+// 调用基类 Dispatcher 的构造函数，将 EventLoop* evloop 传递给基类的构造函数。
+EpollDispatcher::EpollDispatcher(EventLoop *evloop) : Dispatcher(evloop)
 {
-    m_epfd = epoll_create(1);  
+    m_epfd = epoll_create(1);
     if (m_epfd == -1)
     {
         perror("epoll_create");
@@ -21,7 +21,7 @@ EpollDispatcher::EpollDispatcher(EventLoop* evloop) : Dispatcher(evloop)
 EpollDispatcher::~EpollDispatcher()
 {
     close(m_epfd);
-    delete[]m_events;
+    delete[] m_events;
 }
 
 int EpollDispatcher::add()
@@ -44,7 +44,7 @@ int EpollDispatcher::remove()
         exit(0);
     }
     // 通过 channel 释放对应的 TcpConnection 资源
-    m_channel->destroyCallback(const_cast<void*>(m_channel->getArg()));
+    m_channel->destroyCallback(const_cast<void *>(m_channel->getArg()));
 
     return ret;
 }
@@ -73,11 +73,11 @@ int EpollDispatcher::dispatch(int timeout)
             // epollRemove(Channel, evLoop);
             continue;
         }
-        if (events & EPOLLIN)   //读事件
+        if (events & EPOLLIN) // 读事件
         {
             m_evLoop->eventActive(fd, static_cast<int>(FDEvent::ReadEvent));
         }
-        if (events & EPOLLOUT)  //写事件
+        if (events & EPOLLOUT) // 写事件
         {
             m_evLoop->eventActive(fd, static_cast<int>(FDEvent::WriteEvent));
         }
