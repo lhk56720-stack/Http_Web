@@ -203,10 +203,6 @@ CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stdbool.h
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h
 
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o
- /home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c
- /usr/include/stdc-predef.h
-
 CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o
  /home/lhk/VsCode/WebServer/code/ReactorHttp/src/EpollDispatcher.c
  /home/lhk/VsCode/WebServer/code/ReactorHttp/include/Channel.h

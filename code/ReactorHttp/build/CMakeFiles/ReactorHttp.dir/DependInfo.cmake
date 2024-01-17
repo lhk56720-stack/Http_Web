@@ -11,7 +11,6 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/Buffer.c" "CMakeFiles/ReactorHttp.dir/src/Buffer.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/Buffer.c.o.d"
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/Channel.c" "CMakeFiles/ReactorHttp.dir/src/Channel.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/Channel.c.o.d"
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/ChannelMap.c" "CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o.d"
-  "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c" "CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o.d"
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/EpollDispatcher.c" "CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o.d"
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/EventLoop.c" "CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o.d"
   "/home/lhk/VsCode/WebServer/code/ReactorHttp/src/HttpRequest.c" "CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o" "gcc" "CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o.d"

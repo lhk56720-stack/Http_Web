@@ -201,30 +201,6 @@ src/ChannelMap.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ReactorHttp.dir/build.make CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.s
 .PHONY : src/ChannelMap.c.s
 
-src/Dispatcher.o: src/Dispatcher.c.o
-.PHONY : src/Dispatcher.o
-
-# target to build an object file
-src/Dispatcher.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ReactorHttp.dir/build.make CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o
-.PHONY : src/Dispatcher.c.o
-
-src/Dispatcher.i: src/Dispatcher.c.i
-.PHONY : src/Dispatcher.i
-
-# target to preprocess a source file
-src/Dispatcher.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ReactorHttp.dir/build.make CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.i
-.PHONY : src/Dispatcher.c.i
-
-src/Dispatcher.s: src/Dispatcher.c.s
-.PHONY : src/Dispatcher.s
-
-# target to generate assembly for a file
-src/Dispatcher.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ReactorHttp.dir/build.make CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.s
-.PHONY : src/Dispatcher.c.s
-
 src/EpollDispatcher.o: src/EpollDispatcher.c.o
 .PHONY : src/EpollDispatcher.o
 
@@ -507,9 +483,6 @@ help:
 	@echo "... src/ChannelMap.o"
 	@echo "... src/ChannelMap.i"
 	@echo "... src/ChannelMap.s"
-	@echo "... src/Dispatcher.o"
-	@echo "... src/Dispatcher.i"
-	@echo "... src/Dispatcher.s"
 	@echo "... src/EpollDispatcher.o"
 	@echo "... src/EpollDispatcher.i"
 	@echo "... src/EpollDispatcher.s"

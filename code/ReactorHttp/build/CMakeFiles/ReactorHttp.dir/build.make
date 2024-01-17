@@ -111,24 +111,10 @@ CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lhk/VsCode/WebServer/code/ReactorHttp/src/ChannelMap.c -o CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.s
 
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o: CMakeFiles/ReactorHttp.dir/flags.make
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o -MF CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o.d -o CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c
-
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c > CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.i
-
-CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/lhk/VsCode/WebServer/code/ReactorHttp/src/Dispatcher.c -o CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.s
-
 CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/EpollDispatcher.c
 CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o -MF CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o.d -o CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/EpollDispatcher.c
 
 CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.i: cmake_force
@@ -142,7 +128,7 @@ CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/EventLoop.c
 CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o -MF CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o.d -o CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/EventLoop.c
 
 CMakeFiles/ReactorHttp.dir/src/EventLoop.c.i: cmake_force
@@ -156,7 +142,7 @@ CMakeFiles/ReactorHttp.dir/src/EventLoop.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/HttpRequest.c
 CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o -MF CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o.d -o CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/HttpRequest.c
 
 CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.i: cmake_force
@@ -170,7 +156,7 @@ CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/HttpResPonse.c
 CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o -MF CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o.d -o CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/HttpResPonse.c
 
 CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.i: cmake_force
@@ -184,7 +170,7 @@ CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/PollDispatcher.c
 CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o -MF CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o.d -o CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/PollDispatcher.c
 
 CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.i: cmake_force
@@ -198,7 +184,7 @@ CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/SelectDispatcher.c
 CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o -MF CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o.d -o CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/SelectDispatcher.c
 
 CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.i: cmake_force
@@ -212,7 +198,7 @@ CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/TcpConnection.c
 CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o -MF CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o.d -o CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/TcpConnection.c
 
 CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.i: cmake_force
@@ -226,7 +212,7 @@ CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/TcpServer.c
 CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o -MF CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o.d -o CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/TcpServer.c
 
 CMakeFiles/ReactorHttp.dir/src/TcpServer.c.i: cmake_force
@@ -240,7 +226,7 @@ CMakeFiles/ReactorHttp.dir/src/TcpServer.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/ThreadPool.c
 CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o -MF CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o.d -o CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/ThreadPool.c
 
 CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.i: cmake_force
@@ -254,7 +240,7 @@ CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/WorkThread.c
 CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o -MF CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o.d -o CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/WorkThread.c
 
 CMakeFiles/ReactorHttp.dir/src/WorkThread.c.i: cmake_force
@@ -268,7 +254,7 @@ CMakeFiles/ReactorHttp.dir/src/WorkThread.c.s: cmake_force
 CMakeFiles/ReactorHttp.dir/src/main.c.o: CMakeFiles/ReactorHttp.dir/flags.make
 CMakeFiles/ReactorHttp.dir/src/main.c.o: /home/lhk/VsCode/WebServer/code/ReactorHttp/src/main.c
 CMakeFiles/ReactorHttp.dir/src/main.c.o: CMakeFiles/ReactorHttp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/ReactorHttp.dir/src/main.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/ReactorHttp.dir/src/main.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/ReactorHttp.dir/src/main.c.o -MF CMakeFiles/ReactorHttp.dir/src/main.c.o.d -o CMakeFiles/ReactorHttp.dir/src/main.c.o -c /home/lhk/VsCode/WebServer/code/ReactorHttp/src/main.c
 
 CMakeFiles/ReactorHttp.dir/src/main.c.i: cmake_force
@@ -284,7 +270,6 @@ ReactorHttp_OBJECTS = \
 "CMakeFiles/ReactorHttp.dir/src/Buffer.c.o" \
 "CMakeFiles/ReactorHttp.dir/src/Channel.c.o" \
 "CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o" \
-"CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o" \
 "CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o" \
 "CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o" \
 "CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o" \
@@ -300,28 +285,27 @@ ReactorHttp_OBJECTS = \
 # External object files for target ReactorHttp
 ReactorHttp_EXTERNAL_OBJECTS =
 
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/Buffer.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/Channel.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/src/main.c.o
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/build.make
-/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp: CMakeFiles/ReactorHttp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking C executable /home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp"
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/Buffer.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/Channel.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/HttpRequest.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/HttpResPonse.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/PollDispatcher.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/SelectDispatcher.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/TcpConnection.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/TcpServer.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/ThreadPool.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/src/main.c.o
+ReactorHttp: CMakeFiles/ReactorHttp.dir/build.make
+ReactorHttp: CMakeFiles/ReactorHttp.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/lhk/VsCode/WebServer/code/ReactorHttp/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Linking C executable ReactorHttp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ReactorHttp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/ReactorHttp.dir/build: /home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp
+CMakeFiles/ReactorHttp.dir/build: ReactorHttp
 .PHONY : CMakeFiles/ReactorHttp.dir/build
 
 CMakeFiles/ReactorHttp.dir/clean:

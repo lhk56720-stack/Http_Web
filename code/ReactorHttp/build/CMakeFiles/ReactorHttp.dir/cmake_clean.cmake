@@ -1,14 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp"
-  "/home/lhk/VsCode/WebServer/code/ReactorHttp/ReactorHttp.pdb"
   "CMakeFiles/ReactorHttp.dir/src/Buffer.c.o"
   "CMakeFiles/ReactorHttp.dir/src/Buffer.c.o.d"
   "CMakeFiles/ReactorHttp.dir/src/Channel.c.o"
   "CMakeFiles/ReactorHttp.dir/src/Channel.c.o.d"
   "CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o"
   "CMakeFiles/ReactorHttp.dir/src/ChannelMap.c.o.d"
-  "CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o"
-  "CMakeFiles/ReactorHttp.dir/src/Dispatcher.c.o.d"
   "CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o"
   "CMakeFiles/ReactorHttp.dir/src/EpollDispatcher.c.o.d"
   "CMakeFiles/ReactorHttp.dir/src/EventLoop.c.o"
@@ -31,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ReactorHttp.dir/src/WorkThread.c.o.d"
   "CMakeFiles/ReactorHttp.dir/src/main.c.o"
   "CMakeFiles/ReactorHttp.dir/src/main.c.o.d"
+  "ReactorHttp"
+  "ReactorHttp.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
