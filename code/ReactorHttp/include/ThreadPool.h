@@ -1,18 +1,19 @@
 #pragma once
 #include <stdbool.h>
 #include "WorkThread.h"
-#include<stdlib.h>
-//定义线程池
-struct ThreadPool {
-	struct EventLoop* mainLoop;	//主线程的反应堆模型
+#include <stdlib.h>
+// 定义线程池
+struct ThreadPool
+{
+	struct EventLoop *mainLoop; // 主线程的反应堆模型
 	bool isStart;
 	int threadNum;
-	struct WorkThread* workThreads;
+	struct WorkThread *workThreads;
 	int index;
 };
-//初始化线程池
-struct ThreadPool* threadPoolInit(struct EventLoop* mainLoop, int count);
-//启动线程池
-void threadPoolRun(struct ThreadPool* pool);
-//取出线程池中的某个反应堆实例
-struct EventLoop* takeWorkerEventLoop(struct ThreadPool* pool);
+// 初始化线程池
+struct ThreadPool *threadPoolInit(struct EventLoop *mainLoop, int count);
+// 启动线程池
+void threadPoolRun(struct ThreadPool *pool);
+// 取出线程池中的某个反应堆实例
+struct EventLoop *takeWorkerEventLoop(struct ThreadPool *pool);
