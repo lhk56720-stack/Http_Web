@@ -1,22 +1,22 @@
 #pragma once
-//³õÊ¼»¯¼àÌı
+// åˆå§‹åŒ–ç›‘å¬
 int initListenFd(unsigned short port);
-//Æô¶¯epoll
+// å¯åŠ¨epoll
 int epollRun(int lfd);
-//Óë¿Í»§¶Ë½¨Á¢Á¬½Ó
-void* acceptClient(void* arg);
-//½ÓÊÕHttpÇëÇó
-void* recvHttpRequest(void* arg);
-//½âÎöÇëÇóĞĞ
-int parseRequestLine(const char* line, int cfd);
-//·¢ËÍÎÄ¼ş
-int sendFile(const char* fileName, int cfd);
-//·¢ËÍHttpÏìÓ¦(×´Ì¬ĞĞ+ÏìÓ¦Í·)
-//×´Ì¬ĞĞ=×´Ì¬Âë+×´Ì¬ÃèÊö
-int sendHeadMsg(int cfd, int status, const char* descr, const char* type, int length);
-//·¢ËÍÄ¿Â¼
-int sendDir(const char* dirName, int cfd);
+// ä¸å®¢æˆ·ç«¯å»ºç«‹è¿æ¥
+void *acceptClient(void *arg);
+// æ¥æ”¶Httpè¯·æ±‚
+void *recvHttpRequest(void *arg);
+// è§£æè¯·æ±‚è¡Œ
+int parseRequestLine(const char *line, int cfd);
+// å‘é€æ–‡ä»¶
+int sendFile(const char *fileName, int cfd);
+// å‘é€Httpå“åº”(çŠ¶æ€è¡Œ+å“åº”å¤´)
+// çŠ¶æ€è¡Œ=çŠ¶æ€ç +çŠ¶æ€æè¿°
+int sendHeadMsg(int cfd, int status, const char *descr, const char *type, int length);
+// å‘é€ç›®å½•
+int sendDir(const char *dirName, int cfd);
 
-const char* getFileType(const char* name);
+const char *getFileType(const char *name);
 int hexToDec(char c);
-void decodeMsg(char* to, char* from);
+void decodeMsg(char *to, char *from);

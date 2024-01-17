@@ -1,19 +1,19 @@
 #include "Server.h"
 #include <arpa/inet.h>
-#include<sys/epoll.h>
-#include<stdio.h>
-#include<fcntl.h>
-#include<string.h>
-#include<errno.h>
-#include<strings.h>
-#include<sys/stat.h>
-#include<assert.h>
-#include<sys/sendfile.h>
-#include<dirent.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<pthread.h>
-#include<ctype.h>
+#include <sys/epoll.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <string.h>
+#include <errno.h>
+#include <strings.h>
+#include <sys/stat.h>
+#include <assert.h>
+#include <sys/sendfile.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <ctype.h>
 struct FdInfo
 {
 	int fd;
@@ -22,75 +22,84 @@ struct FdInfo
 };
 int initListenFd(unsigned short port)
 {
-	//1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×½ï¿½ï¿½ï¿½
+	// 1.´´½¨¼àÌýÌ×½Ó×Ö
 	int lfd = socket(AF_INET, SOCK_STREAM, 0);
-	if (lfd == -1) {
+	if (lfd == -1)
+	{
 		perror("socket");
 		return -1;
 	}
-	//2.ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿Ú¸ï¿½ï¿½ï¿½
+	// 2.Æô¶¯¶Ë¿Ú¸´ÓÃ
 	int opt = 1;
-	//È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ØµÈ´ï¿½ TIME_WAIT ×´Ì¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·Å¡ï¿½
+	// È·±£·þÎñÆ÷³ÌÐòÄÜ¹»¸ü¿ìµØÖØÐÂÆô¶¯£¬¶ø²»±ØµÈ´ý TIME_WAIT ×´Ì¬µÄÁ¬½ÓÊÍ·Å¡£
 	int ret = setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof opt);
-	//3.ï¿½ï¿½IPï¿½Ë¿ï¿½
+	// 3.°ó¶¨IP¶Ë¿Ú
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
-	addr.sin_addr.s_addr = INADDR_ANY;		//ï¿½ó¶¨±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½Ö·
-	ret = bind(lfd, (struct sockaddr*)&addr, sizeof(addr));
-	if (ret == -1) {
+	addr.sin_addr.s_addr = INADDR_ANY; // °ó¶¨±¾µØÈÎÒâµÄIPµØÖ·
+	ret = bind(lfd, (struct sockaddr *)&addr, sizeof(addr));
+	if (ret == -1)
+	{
 		perror("bind");
 		return -1;
 	}
-	//4.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// 4.Æô¶¯¼àÌý
 	ret = listen(lfd, 128);
-	if (ret == -1) {
+	if (ret == -1)
+	{
 		perror("listen");
 		return -1;
 	}
-	//5.ï¿½ï¿½ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½×½ï¿½ï¿½ï¿½
+	// 5.·µ»Ø¼àÌýÌ×½Ó×Ö
 	return lfd;
 }
 
 int epollRun(int lfd)
 {
-	//1.ï¿½ï¿½ï¿½ï¿½epollÊµï¿½ï¿½
+	// 1.´´½¨epollÊµÀý
 	int epfd = epoll_create(1);
-	if (epfd == -1) {
+	if (epfd == -1)
+	{
 		perror("epoll_create");
 		return -1;
 	}
-	//2.epollï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó½Úµï¿½
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
+	// 2.epollÊ÷ÉÏÌí¼Ó½Úµã
+	// ´´½¨ÉÏÊ÷ÊÂ¼þ
 	struct epoll_event ev;
 	ev.data.fd = lfd;
-	ev.events = EPOLLIN | EPOLLET;	//ï¿½ï¿½ï¿½Â¼ï¿½
+	ev.events = EPOLLIN | EPOLLET; // ¶ÁÊÂ¼þ
 	int ret = epoll_ctl(epfd, EPOLL_CTL_ADD, lfd, &ev);
-	if (ret == -1) {
+	if (ret == -1)
+	{
 		perror("epoll_ctl");
 		return -1;
 	}
-	//3.Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½
+	// 3.Ñ­»·¼ì²â
 	struct epoll_event evs[1024];
 	int size = sizeof(evs) / sizeof(struct epoll_event);
 	int i = 0;
-	while (1) {
+	while (1)
+	{
 		printf("go in while...%d\n", i++);
 		int num = epoll_wait(epfd, evs, size, -1);
-		for (int i = 0; i < num; ++i) {
-			struct FdInfo* info = (struct FdInfo*)malloc(sizeof(struct FdInfo));
+		for (int i = 0; i < num; ++i)
+		{
+			struct FdInfo *info = (struct FdInfo *)malloc(sizeof(struct FdInfo));
 			int fd = evs[i].data.fd;
 			info->fd = fd;
 			info->epfd = epfd;
-			if (fd == lfd) {
+			if (fd == lfd)
+			{
 				printf("fd==lfd......\n\n");
-				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-				//acceptClient(lfd, epfd);
+				// ½¨Á¢Á¬½Ó
+				// acceptClient(lfd, epfd);
 				pthread_create(&info->tid, NULL, acceptClient, info);
 			}
-			else {
-				//Í¨ï¿½ï¿½
-				//recvHttpRequest(fd, epfd);
+			else
+			{
+				// Í¨ÐÅ
+				// recvHttpRequest(fd, epfd);
 				pthread_create(&info->tid, NULL, recvHttpRequest, info);
 			}
 		}
@@ -98,28 +107,30 @@ int epollRun(int lfd)
 	return 0;
 }
 
-void* acceptClient(void* arg)
+void *acceptClient(void *arg)
 {
-	struct FdInfo* info = (struct FdInfo*)arg;
+	struct FdInfo *info = (struct FdInfo *)arg;
 	printf("acceptClient thread id:%ld\n", info->tid);
-	//1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// 1.½¨Á¢Á¬½Ó
 	int cfd = accept(info->fd, NULL, NULL);
-	if (cfd == -1) {
+	if (cfd == -1)
+	{
 		perror("accept");
 		return NULL;
 	}
-	//epollï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
-	//2.ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½
+	// epoll±ßÑØ·Ç×èÈûÄ£Ê½
+	// 2.ÉèÖÃ·Ç×èÈû
 	int flag = fcntl(cfd, F_GETFL);
 	flag |= O_NONBLOCK;
 	fcntl(cfd, F_SETFL, flag);
 
-	//3.cfdï¿½ï¿½ï¿½Óµï¿½epollï¿½ï¿½
+	// 3.cfdÌí¼Óµ½epollÖÐ
 	struct epoll_event ev;
 	ev.data.fd = cfd;
 	ev.events = EPOLLIN | EPOLLET;
 	int ret = epoll_ctl(info->epfd, EPOLL_CTL_ADD, cfd, &ev);
-	if (ret == -1) {
+	if (ret == -1)
+	{
 		perror("epoll_ctl");
 		return NULL;
 	}
@@ -127,43 +138,47 @@ void* acceptClient(void* arg)
 	return NULL;
 }
 
-void* recvHttpRequest(void* arg)
+void *recvHttpRequest(void *arg)
 {
-	struct FdInfo* info = (struct FdInfo*)arg;
-	char buf[1024 * 4] = { 0 };
-	char tmp[1024] = { 0 };
+	struct FdInfo *info = (struct FdInfo *)arg;
+	char buf[1024 * 4] = {0};
+	char tmp[1024] = {0};
 	int len = 0, total = 0;
-	//ï¿½ï¿½ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ÒªÒ»ï¿½ï¿½ï¿½Ô¶ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	while ((len = recv(info->fd, tmp, sizeof tmp, 0)) > 0) {
-		//printf("len=%d\n", len);
-		//Ö»ï¿½ï¿½Òªï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¶ï¿½Ê§Ò²ï¿½ï¿½ï¿½ï¿½
-		if (total + len < sizeof buf) {
+	// ±ßÑØÄ£Ê½£¬ÐèÒªÒ»´ÎÐÔ¶ÁÈ¡ËùÓÐÊý¾Ý
+	while ((len = recv(info->fd, tmp, sizeof tmp, 0)) > 0)
+	{
+		// printf("len=%d\n", len);
+		// Ö»ÐèÒª¶ÁÈ¡µ½ÇëÇóÐÐ¼´¿É£¬ºóÃæµÄÄÚÈÝ¶ªÊ§Ò²¿ÉÒÔ
+		if (total + len < sizeof buf)
+		{
 			memcpy(buf + total, tmp, len);
 		}
 		total += len;
 	}
-	//recvï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¶ï¿½È¡Ê§ï¿½Ü»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¾ï¿½ï¿½á·µï¿½ï¿½-1
-	//ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ñ±»³É¹ï¿½ï¿½ï¿½È¡
-	if (len == -1 && errno == EAGAIN) {
+	// recvÊÇ·Ç×èÈûµÄÒò´Ë¶ÁÈ¡Ê§°Ü»ò¶ÁÍêÊý¾Ý¾ù»á·µ»Ø-1
+	// ÅÐ¶ÏÊý¾ÝÊÇ·ñ±»³É¹¦¶ÁÈ¡
+	if (len == -1 && errno == EAGAIN)
+	{
 		/*
-		1.ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-		2.ï¿½ï¿½ï¿½ï¿½Í·
-		3.ï¿½ï¿½
-		4.ï¿½ï¿½
+		1.ÇëÇóÐÐ
+		2.ÇëÇóÍ·
+		3.¿Õ
+		4.¿Õ
 		*/
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½getï¿½ï¿½ï¿½ï¿½
-		char* pt = strstr(buf, "\r\n");
+		// ½âÎöÇëÇóÐÐ	½ö´¦ÀígetÇëÇó
+		char *pt = strstr(buf, "\r\n");
 		int reqLen = pt - buf;
 		buf[reqLen] = '\0';
 		parseRequestLine(buf, info->fd);
-
 	}
-	else if (len == 0) {
-		//ï¿½Í»ï¿½ï¿½Ë¶Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	else if (len == 0)
+	{
+		// ¿Í»§¶Ë¶Ï¿ªÁËÁ¬½Ó
 		epoll_ctl(info->epfd, EPOLL_CTL_DEL, info->fd, NULL);
 		close(info->fd);
 	}
-	else {
+	else
+	{
 		perror("recv");
 		return NULL;
 	}
@@ -172,44 +187,50 @@ void* recvHttpRequest(void* arg)
 	return NULL;
 }
 
-int parseRequestLine(const char* line, int cfd)
+int parseRequestLine(const char *line, int cfd)
 {
-	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	// ½âÎöÇëÇóÐÐ
 	char method[12];
 	char path[1024];
 	sscanf(line, "%[^ ] %[^ ]", method, path);
 	printf("method:%s\tpath=%s\n", method, path);
-	if (strcasecmp(method, "get") != 0) {
-		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	if (strcasecmp(method, "get") != 0)
+	{
+		// ²»×ö´¦Àí
 		return -1;
 	}
 	decodeMsg(path, path);
 	printf("backpath:%s\n", path);
-	//ï¿½ï¿½ï¿½ï¿½ï¿½Í»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½Ì¬ï¿½ï¿½Ô´(Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½)
-	char* file = NULL;
-	if (strcmp(path, "/") == 0) {
+	// ´¦Àí¿Í»§¶ËÇëÇóµÄ¾²Ì¬×ÊÔ´(Ä¿Â¼»òÕßÎÄ¼þ)
+	char *file = NULL;
+	if (strcmp(path, "/") == 0)
+	{
 		file = "./";
 	}
-	else {
+	else
+	{
 		file = path + 1;
 	}
-	//ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
+	// »ñÈ¡ÎÄ¼þÊôÐÔ
 	struct stat st;
 	int ret = stat(file, &st);
-	if (ret == -1) {
-		//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	ï¿½ï¿½ï¿½ï¿½404
-		sendHeadMsg(cfd, 404, "Not Found", getFileType(".html"), -1);	//Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½-1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+	if (ret == -1)
+	{
+		// ÎÄ¼þ²»´æÔÚ	·µ»Ø404
+		sendHeadMsg(cfd, 404, "Not Found", getFileType(".html"), -1); // Ö¸¶¨²ÎÊý-1ä¯ÀÀÆ÷×Ô¶¯¶ÁÈ¡³¤¶È
 		sendFile("404.html", cfd);
 		return -1;
 	}
-	//ï¿½Ð¶ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½
-	if (S_ISDIR(st.st_mode)) {
-		//ï¿½ï¿½Ä¿Â¼ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½Í¸ï¿½ï¿½Í»ï¿½ï¿½ï¿½
+	// ÅÐ¶ÏÎÄ¼þÀàÐÍ
+	if (S_ISDIR(st.st_mode))
+	{
+		// °ÑÄ¿Â¼ÖÐµÄÄÚÈÝ·¢ËÍ¸ø¿Í»§¶Ë
 		sendHeadMsg(cfd, 200, "OK", getFileType(".html"), -1);
 		sendDir(file, cfd);
 	}
-	else {
-		//ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½Í¸ï¿½ï¿½Í»ï¿½ï¿½ï¿½
+	else
+	{
+		// °ÑÎÄ¼þÖÐµÄÄÚÈÝ·¢ËÍ¸ø¿Í»§¶Ë
 		sendHeadMsg(cfd, 200, "OK", getFileType(file), st.st_size);
 		sendFile(file, cfd);
 	}
@@ -217,23 +238,23 @@ int parseRequestLine(const char* line, int cfd)
 	return 0;
 }
 
-int sendFile(const char* fileName, int cfd)
+int sendFile(const char *fileName, int cfd)
 {
-	//1.ï¿½ï¿½ï¿½Ä¼ï¿½
+	// 1.´ò¿ªÎÄ¼þ
 	int fp = open(fileName, O_RDONLY);
 	assert(fp);
 #if 0
 	while (0)
 	{
-		//Ã¿ï¿½Î´ï¿½ï¿½Ä¼ï¿½ï¿½Ð¶ï¿½È¡1kï¿½ï¿½ï¿½ï¿½
+		//Ã¿´Î´ÓÎÄ¼þÖÐ¶ÁÈ¡1kÊý¾Ý
 		char buf[1024];
 		int len = read(fp, buf, sizeof buf);
 		if (len > 0) {
 			send(cfd, buf, len, 0);
-			usleep(10);		//ï¿½ï¿½ï¿½Æ·ï¿½ï¿½Í¶ï¿½ï¿½Ù¶ï¿½
+			usleep(10);		//¿ØÖÆ·¢ËÍ¶ËËÙ¶È
 		}
 		else if (len == 0) {
-			//ï¿½ï¿½ï¿½Ý¶ï¿½È¡ï¿½ï¿½ï¿½
+			//Êý¾Ý¶ÁÈ¡Íê±Ï
 			break;
 		}
 		else
@@ -243,76 +264,79 @@ int sendFile(const char* fileName, int cfd)
 
 	}
 #else
-	off_t offset = 0;		//Ê¹ï¿½ï¿½intï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
+	off_t offset = 0; // Ê¹ÓÃint¼ÓÔØÊ§°Ü
 	int size = lseek(fp, 0, SEEK_END);
 	lseek(fp, 0, SEEK_SET);
-	while (offset < size) {
-		int ret=sendfile(cfd, fp, &offset, size);		//ï¿½Å³ï¿½ï¿½ã¿½ï¿½ï¿½
-		if (ret == -1) {
+	while (offset < size)
+	{
+		int ret = sendfile(cfd, fp, &offset, size); // ºÅ³ÆÁã¿½±´
+		if (ret == -1)
+		{
 			perror("sendfile");
 		}
 	}
-	
+
 #endif
 	close(fp);
 	return 0;
 }
 
-int sendHeadMsg(int cfd, int status, const char* descr, const char* type, int length)
+int sendHeadMsg(int cfd, int status, const char *descr, const char *type, int length)
 {
-	char buf[1024 * 4] = { 0 };
-	//×´Ì¬ï¿½ï¿½
+	char buf[1024 * 4] = {0};
+	// ×´Ì¬ÐÐ
 	sprintf(buf, "http/1.1 %d %s\r\n", status, descr);
-	//ï¿½ï¿½Ó¦Í·
+	// ÏìÓ¦Í·
 	sprintf(buf + strlen(buf), "content-type:%s\r\n", type);
 	sprintf(buf + strlen(buf), "content-length:%d\r\n\r\n", length);
 	send(cfd, buf, strlen(buf), 0);
 	return 0;
 }
 
-int sendDir(const char* dirName, int cfd)
+int sendDir(const char *dirName, int cfd)
 {
 	char buf[1024 * 4];
 	sprintf(buf, "<html><head><title>%s</title></head><body><table>", dirName);
-	struct dirent** namelist;
-	int num=scandir(dirName, &namelist, NULL, alphasort);
-	for (int i = 0; i < num; ++i) {
-		//È¡ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½
-		char* name = namelist[i]->d_name;
+	struct dirent **namelist;
+	int num = scandir(dirName, &namelist, NULL, alphasort);
+	for (int i = 0; i < num; ++i)
+	{
+		// È¡³öÎÄ¼þÃû
+		char *name = namelist[i]->d_name;
 		struct stat st;
-		char subPath[1024] = { 0 };
+		char subPath[1024] = {0};
 		sprintf(subPath, "%s/%s", dirName, name);
 		stat(subPath, &st);
-		if (S_ISDIR(st.st_mode)) {
-			//Ä¿Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+		if (S_ISDIR(st.st_mode))
+		{
+			// Ä¿Â¼´¦Àí·½Ê½
 			sprintf(buf + strlen(buf),
-				"<tr><td><a href=\"%s/\">%s</a></td><td>%ld</td></tr>",			//Ä¿Â¼ï¿½ï¿½Òªï¿½ï¿½/
-				name, name, st.st_size);
+					"<tr><td><a href=\"%s/\">%s</a></td><td>%ld</td></tr>", // Ä¿Â¼ÐèÒª¼Ó/
+					name, name, st.st_size);
 		}
 		else
 		{
-			//ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
+			// ÎÄ¼þ´¦Àí·½Ê½
 			sprintf(buf + strlen(buf),
-				"<tr><td><a href=\"%s\">%s</a></td><td>%ld</td></tr>",			
-				name, name, st.st_size);
-
+					"<tr><td><a href=\"%s\">%s</a></td><td>%ld</td></tr>",
+					name, name, st.st_size);
 		}
 		send(cfd, buf, strlen(buf), 0);
 		memset(buf, 0, sizeof buf);
 		free(namelist[i]);
 	}
-	sprintf(buf+strlen(buf), "</table></body></html>");
+	sprintf(buf + strlen(buf), "</table></body></html>");
 	free(namelist);
 	return 0;
 }
 
-const char* getFileType(const char* name)
+const char *getFileType(const char *name)
 {
 	// a.jpg a.mp4 a.html
-	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò¡ï¿½.ï¿½ï¿½ï¿½Ö·ï¿½, ï¿½ç²»ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½NULL
-	const char* dot = strrchr(name, '.');
+	// ×ÔÓÒÏò×ó²éÕÒ¡®.¡¯×Ö·û, Èç²»´æÔÚ·µ»ØNULL
+	const char *dot = strrchr(name, '.');
 	if (dot == NULL)
-		return "text/plain; charset=utf-8";	// ï¿½ï¿½ï¿½Ä±ï¿½
+		return "text/plain; charset=utf-8"; // ´¿ÎÄ±¾
 	if (strcmp(dot, ".html") == 0 || strcmp(dot, ".htm") == 0)
 		return "text/html; charset=utf-8";
 	if (strcmp(dot, ".jpg") == 0 || strcmp(dot, ".jpeg") == 0)
@@ -347,7 +371,7 @@ const char* getFileType(const char* name)
 	return "text/plain; charset=utf-8";
 }
 
-// ï¿½ï¿½ï¿½Ö·ï¿½×ªï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ½«×Ö·û×ª»»ÎªÕûÐÎÊý
 int hexToDec(char c)
 {
 	if (c >= '0' && c <= '9')
@@ -360,31 +384,29 @@ int hexToDec(char c)
 	return 0;
 }
 
-// ï¿½ï¿½ï¿½ï¿½
-// to ï¿½æ´¢ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, fromï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-void decodeMsg(char* to, char* from)
+// ½âÂë
+// to ´æ´¢½âÂëÖ®ºóµÄÊý¾Ý, ´«³ö²ÎÊý, from±»½âÂëµÄÊý¾Ý, ´«Èë²ÎÊý
+void decodeMsg(char *to, char *from)
 {
 	for (; *from != '\0'; ++to, ++from)
 	{
-		// isxdigit -> ï¿½Ð¶ï¿½ï¿½Ö·ï¿½ï¿½Ç²ï¿½ï¿½ï¿½16ï¿½ï¿½ï¿½Æ¸ï¿½Ê½, È¡Öµï¿½ï¿½ 0-f
+		// isxdigit -> ÅÐ¶Ï×Ö·ûÊÇ²»ÊÇ16½øÖÆ¸ñÊ½, È¡ÖµÔÚ 0-f
 		// Linux%E5%86%85%E6%A0%B8.jpg
 		if (from[0] == '%' && isxdigit(from[1]) && isxdigit(from[2]))
 		{
-			// ï¿½ï¿½16ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ -> Ê®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ int -> char
+			// ½«16½øÖÆµÄÊý -> Ê®½øÖÆ ½«Õâ¸öÊýÖµ¸³Öµ¸øÁË×Ö·û int -> char
 			// B2 == 178
-			// ï¿½ï¿½3ï¿½ï¿½ï¿½Ö·ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Ö·ï¿½, ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½Ô­Ê¼ï¿½ï¿½ï¿½ï¿½
+			// ½«3¸ö×Ö·û, ±ä³ÉÁËÒ»¸ö×Ö·û, Õâ¸ö×Ö·û¾ÍÊÇÔ­Ê¼Êý¾Ý
 			*to = hexToDec(from[1]) * 16 + hexToDec(from[2]);
 
-			// ï¿½ï¿½ï¿½ï¿½ from[1] ï¿½ï¿½ from[2] ï¿½ï¿½ï¿½ï¿½Úµï¿½Ç°Ñ­ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			// Ìø¹ý from[1] ºÍ from[2] Òò´ËÔÚµ±Ç°Ñ­»·ÖÐÒÑ¾­´¦Àí¹ýÁË
 			from += 2;
 		}
 		else
 		{
-			// ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Öµ
+			// ×Ö·û¿½±´, ¸³Öµ
 			*to = *from;
 		}
-
 	}
 	*to = '\0';
 }
-

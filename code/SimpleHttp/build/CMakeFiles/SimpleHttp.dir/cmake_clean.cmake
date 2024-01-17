@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/lhk/VsCode/WebServer/code/SimpleHttp/SimpleHttp"
-  "/home/lhk/VsCode/WebServer/code/SimpleHttp/SimpleHttp.pdb"
   "CMakeFiles/SimpleHttp.dir/Server.c.o"
   "CMakeFiles/SimpleHttp.dir/Server.c.o.d"
   "CMakeFiles/SimpleHttp.dir/main.c.o"
   "CMakeFiles/SimpleHttp.dir/main.c.o.d"
+  "SimpleHttp"
+  "SimpleHttp.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
